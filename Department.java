@@ -12,7 +12,15 @@ class Department{
 	
 	public void setStaffers(List<Staff> s)
 	{
-		
+
 	}
 	
+	public void setSupervisor(Supervisor s)
+	{
+
+	}
+	public Supervisor getSupervisor()
+	{
+
+	}
 }
