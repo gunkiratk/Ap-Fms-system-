@@ -1,3 +1,7 @@
-class Hvac{
-	//Some small function like print statement
+public class Hvac extends Department
+{
+	Hvac()
+	{
+		
+	}
 }
