@@ -1,5 +1,6 @@
 public class Staff extends User{
 	private String status;
+	Task task = new Task(null,null,0,null,null,null,null);
 	Staff()
 	{
 		
