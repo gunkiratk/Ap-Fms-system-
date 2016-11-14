@@ -1,4 +1,4 @@
-class Department{
+abstract class Department{
 	List<Staff> Staffers=new List<Staff>();
 	Supervisor sv= new Supervisor;
 	Department()
