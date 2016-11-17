@@ -1,10 +1,14 @@
 package fms;
 import java.util.*;
+import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.*;
 
 import javax.swing.*;
 public class SystemFMS{
@@ -13,34 +17,44 @@ public class SystemFMS{
 	Admin admin = new Admin();
 	JFrame frame;
 	JPanel panel;
-	JLabel label1;
+	JLabel label1,label2;
+	JButton bttn_str,bttn_exit;
+	
 	SystemFMS(){
 		frame=new JFrame();
 		panel=new JPanel();
-		frame.getContentPane().add(panel);
-		panel.setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		label1=new JLabel();
-		label1 = new JLabel("Facilities Management Services System");
-		JButton start_button = new JButton("LOGIN");
-		start_button.setBackground(Color.CYAN);
-		JButton exit_button = new JButton("REGISTER");
-		exit_button.setBackground(Color.CYAN);
-		panel.add(label1, gbc);
-		panel.add(new JLabel(" "), gbc);
-		panel.add(start_button, gbc);
-		panel.add(new JLabel(" "), gbc);
-		panel.add(exit_button, gbc);
-		exit_button.addActionListener(new ActionListener(){
+		panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+		JLabel label1=new JLabel("Facility Management Services");
+		JLabel label2=new JLabel("System");
+		bttn_str=new JButton("Login");
+		bttn_exit=new JButton("Register");
+		bttn_exit.setBackground(Color.BLUE);
+		bttn_exit.setOpaque(true);
+		bttn_exit.setBorderPainted(false);
+		bttn_str.setBackground(Color.BLUE);
+		bttn_str.setOpaque(true);
+		bttn_str.setBorderPainted(false);
+		panel.setLayout(null);
+		label1.setBounds(100,120,500,40);
+		label2.setBounds(250,180,450,40);
+		label1.setFont(new Font("Arial",Font.BOLD,30));
+		label2.setFont(new Font("Arial",Font.BOLD,30));
+		bttn_str.setBounds(230,250,150,40);
+		bttn_exit.setBounds(250,350,100,40);
+		panel.add(label1);
+		panel.add(label2);
+		panel.add(bttn_str);
+		panel.add(bttn_exit);
+		panel.setBackground(new Color(255,255,244));
+		bttn_str.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ev){
-				System.exit(0);
+				new Login();
 			}
 		});
 		
+		frame.getContentPane().add(panel,BorderLayout.CENTER);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300, 300);
+		frame.setSize(600,600);
 		frame.setVisible(true);
 	}
 
@@ -58,5 +72,37 @@ public class SystemFMS{
 
 	public static void main(String[] args){
 		new SystemFMS();
+	}
+	public class Login
+	{
+		Login()
+		{
+			
+			panel.removeAll();
+			panel.updateUI();
+			panel.setLayout(new FlowLayout(FlowLayout.LEADING, 3, 60));
+			JButton Home=new JButton("Home");
+			JButton Staff=new JButton("Staff");
+			JButton Log=new JButton("Logistic");
+			JButton report=new JButton("Report");
+			JButton request=new JButton("Request");
+			JLabel lbl=new JLabel("");
+			JLabel timeLabel = new JLabel();
+			panel.add(lbl);
+			panel.add(Home);
+			panel.add(Staff);
+			panel.add(Log);
+			panel.add(report);
+			panel.add(request);
+			
+			Date today = Calendar.getInstance().getTime();
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh.mm.ss");
+			String date1 = formatter.format(today);
+			timeLabel.setText(date1);
+			panel.add(timeLabel);
+			
+			frame.getContentPane().add(panel,BorderLayout.CENTER);
+			
+		}
 	}
 }
