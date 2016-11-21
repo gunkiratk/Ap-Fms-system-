@@ -48,7 +48,7 @@ public class SystemFMS{
 		panel.setBackground(new Color(255,255,244));
 		bttn_str.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ev){
-				new Login();
+				new Login_Admin();
 			}
 		});
 		
@@ -73,9 +73,9 @@ public class SystemFMS{
 	public static void main(String[] args){
 		new SystemFMS();
 	}
-	public class Login
+	public class Login_Admin
 	{
-		Login()
+		Login_Admin()
 		{
 			
 			panel.removeAll();
