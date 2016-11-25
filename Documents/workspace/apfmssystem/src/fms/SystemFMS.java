@@ -105,4 +105,36 @@ public class SystemFMS{
 			
 		}
 	}
+	public class Login_Staff
+	{
+		Login_Staff()
+		{
+			
+			panel.removeAll();
+			panel.updateUI();
+			panel.setLayout(new FlowLayout(FlowLayout.LEADING, 3, 60));
+			JButton Home=new JButton("Home");
+			JButton Staff=new JButton("Task Report");
+			JButton Log=new JButton("Logistic");
+			JButton report=new JButton("Status");
+			JButton request=new JButton("Leave");
+			JLabel lbl=new JLabel("");
+			JLabel timeLabel = new JLabel();
+			panel.add(lbl);
+			panel.add(Home);
+			panel.add(Staff);
+			panel.add(Log);
+			panel.add(report);
+			panel.add(request);
+			
+			Date today = Calendar.getInstance().getTime();
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh.mm.ss");
+			String date1 = formatter.format(today);
+			timeLabel.setText(date1);
+			panel.add(timeLabel);
+			
+			frame.getContentPane().add(panel,BorderLayout.CENTER);
+			
+		}
+	}
 }
