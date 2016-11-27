@@ -7,10 +7,11 @@ class Task{
 	private String items_used;
 	private String time_taken;
 	private String comments;
+	String def_status = "NOT STARTED";
 
-	public Task(String d, String s, int tid, String tname, String i, String tt, String c){
+	public Task(String d, def_status, int tid, String tname, String i, String tt, String c){
 		deadline = d;
-		status = s;
+		status = def_status;
 		taskid = tid;
 		taskname = tname;
 		items_used = i;
