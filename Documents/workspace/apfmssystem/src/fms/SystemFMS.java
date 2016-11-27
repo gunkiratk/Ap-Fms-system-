@@ -69,6 +69,10 @@ public class SystemFMS{
 	public void logout(){
 
 	}
+	public void writeDatabase()
+	{
+		
+	}
 
 	public static void main(String[] args){
 		new SystemFMS();
@@ -105,6 +109,7 @@ public class SystemFMS{
 			
 		}
 	}
+
 	public class Login_Staff
 	{
 		Login_Staff()
