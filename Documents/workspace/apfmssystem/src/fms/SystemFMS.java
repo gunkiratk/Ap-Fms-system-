@@ -71,7 +71,11 @@ public class SystemFMS{
 	}
 	public void writeDatabase()
 	{
-		
+
+	}
+	public void serialiseDatabase()
+	{
+
 	}
 
 	public static void main(String[] args){
