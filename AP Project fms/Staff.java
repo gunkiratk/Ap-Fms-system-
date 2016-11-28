@@ -1,10 +1,16 @@
 // package fms;
 public class Staff extends User{
 	private String status;
-	Task task = new Task(null,null,0,null,null,null,null);
+	Task task;
 	Staff()
 	{
-		super(0,null,null,null,null,null,null);
+		super(null,0,null,null,null,null,null,null);
+	}
+	public void setTask(Task t){
+		task = t;
+	}
+	public Task getTask(){
+		return task;
 	}
 	public String getStatus()
 	{
@@ -12,7 +18,7 @@ public class Staff extends User{
 	}
 	public void setStatus(String s)
 	{
-		
+		this.status = s;
 	}
 	public void sendLogisticreq(int id,String quantity,String taskrefid)
 	{

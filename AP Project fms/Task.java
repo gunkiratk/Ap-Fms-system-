@@ -9,11 +9,11 @@ class Task{
 	private String comments;
 	String def_status = "NOT STARTED";
 
-	public Task(String d, def_status, int tid, String tname, String i, String tt, String c){
-		deadline = d;
+	public Task(String tname, def_status, int tid, String d, String i, String tt, String c){
+		taskname = tname;
 		status = def_status;
 		taskid = tid;
-		taskname = tname;
+		deadline = d;
 		items_used = i;
 		time_taken = tt;
 		comments = c;
@@ -61,5 +61,9 @@ class Task{
 	}
 	public void setComments(String c){
 		this.comments = c;
+	}
+
+	public String toString(){
+		return "Task name : " + getTaskname() + "\n" + "Task ID : " + getTaskid() + "\n" +"Status : " + getStatus() + "\n" + "Deadline(if any) : " + getDeadline() + "\n" +  "Items used : " + getItems_used() + "\n" + "Time taken : " + getTime_taken() + "\n" + "Comments : " + getComments() + "\n";
 	}
 }

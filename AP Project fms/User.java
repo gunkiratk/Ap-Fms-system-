@@ -1,5 +1,6 @@
 // package fms;
 abstract class User{
+	private String name;
 	private int id;
 	private String username;
 	private String dob;
@@ -8,7 +9,8 @@ abstract class User{
 	private String type;
 	private String password;
 
-	public User(int i, String u, String d, String a, String de, String t,String p){
+	public User(String n,int i, String u, String d, String a, String de, String t,String p){
+		name = n;
 		id = i;
 		username = u;
 		dob = d;
@@ -18,6 +20,9 @@ abstract class User{
 		password = p;
 	}
 
+	public String getName(){
+		return name;
+	}
 	public int getId(){
 		return id;
 	}
@@ -40,6 +45,9 @@ abstract class User{
 		return password;
 	}
 
+	public void setName(String n){
+		this.name = n;
+	}
 	public void setId(int id){
 		this.id = id;
 	}
@@ -60,5 +68,9 @@ abstract class User{
 	}
 	public void setPassword(String pass){
 		this.password = pass;
+	}
+
+	public String toString(){
+		return "Name" + getName() + "\n" + "Username : " + getUsername() + "\n" + "User id : " + getId() + "\n" + "Date of Birth : " + getDob() + "\n" + "Address : " + getAddress() + "\n" + "Department : " + getDept() + "\n" + "Type : " + getType() + "\n" + "Password : " + getPassword() + "\n";
 	}
 }
