@@ -3,9 +3,11 @@ import java.util.*;
 import java.io.*;
 public class Supervisor extends User{
 
+	private String status;
 	private ArrayList<Task> tasks=new ArrayList<Task>();
 	ArrayList<Staff> staffList2=new ArrayList<Staff>();
 	ArrayList<Staff> staffPendingList2=new ArrayList<Staff>();
+	static ArrayList<Supervisor> leaveAppListSup = new ArrayList<Supervisor>();
 
 	Supervisor(String n,String i, String u, String d, String a, String de, String t,String p)
 	{
@@ -24,6 +26,14 @@ public class Supervisor extends User{
 	// 	s.setPassword(pass);
 	// 	staffList2.add(s);
 	// }
+	public String getStatusSupervisor()
+	{
+			return status;
+	}
+	public void setStatusSupervisor(String s)
+	{
+		this.status = s;
+	}
 
 public void approveStaffMember(String instruction){
 	staffPendingList2 = getDeptPendingStaffDatabase();
@@ -72,7 +82,7 @@ public void approveStaffMember(String instruction){
 				for(Staff j : staffList2){
 					if((j.getUsername()).equals(staffernames.get(i))){
 						j.setTask(t);
-						j.setStatus("Busy");
+						j.setStatusStaff("Busy");
 						j.setTask(t);
 					break;
 					}	
@@ -94,9 +104,9 @@ public void approveStaffMember(String instruction){
 	{
 
 	}
-	public void sendLeave(Admin a,String reason,String daterange)
+	public void sendLeave()
 	{
-
+		leaveAppListSup.add(this);
 	}
 	public void viewTask()
 	{
@@ -108,6 +118,21 @@ public void approveStaffMember(String instruction){
 	public ArrayList<Task> getTasks()
 	{
 		return tasks;
+	}
+	public void approveLeaveApp(String instruction,Staff st){
+		ArrayList<Staff> ap = new ArrayList<Staff>();
+		if(instruction.equalsIgnoreCase("Accept")){
+			(Staff.getLeaveAppList()).remove(st);
+			st.setStatusStaff("On Leave");
+		}
+		else if(instruction.equalsIgnoreCase("Reject")){
+			(Staff.getLeaveAppList()).remove(st)
+		}
+
+	}
+
+	public static ArrayList<Supervisor> getLeaveAppListSup(){
+		return leaveAppListSup;
 	}
 	public ArrayList<Staff> getDeptStaffDatabase(){
 		BufferedReader br_1 = null;
@@ -186,5 +211,6 @@ public void approveStaffMember(String instruction){
 		}
 		//update only entries of this department in the pending staff database
 	}
+
 
 }

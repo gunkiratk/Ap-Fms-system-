@@ -149,38 +149,66 @@ public class Admin extends User{
 		System.out.println(supervisorPendingList);
 		supervisorsList = getSupervisorDatabase();
 		System.out.println(supervisorsList);
-
+		Scanner in=new Scanner(System.in);
+		String name=in.nextLine();
+		System.out.println(name);
+		if(instruction.equals("Accept")){
 		for(int i=0;i<supervisorPendingList.size();i++){
-			if(instruction.equals("Accept")){
-				Scanner in=new Scanner(System.in);
-				String name=in.nextLine();
-				System.out.println(name);
-				if(supervisorsList.get(i).getUsername().equals(name))
+				if(supervisorPendingList.get(i).getUsername().equals(name))
 				{	
 					for(int j=0;j<supervisorsList.size();j++){
-
-					if((supervisorsList.get(j).getDept()).equals(supervisorPendingList.get(i).getDept())){
+						System.out.println(supervisorsList.size());
+						System.out.println(supervisorPendingList.size());
+						System.out.println(supervisorsList.get(j).getDept());
+						System.out.println(supervisorPendingList.get(i).getDept());
+					if(supervisorsList.get(j).getDept().equals(supervisorPendingList.get(i).getDept())){
 						supervisorsList.remove(supervisorsList.get(j));
+						supervisorsList.add(supervisorPendingList.get(i));
+						supervisorPendingList.remove(supervisorPendingList.get(i));
+						System.out.println(supervisorsList);
+						System.out.println(supervisorPendingList);
+						break;
 					}
+					else
+					{
+						supervisorsList.add(supervisorPendingList.get(i));
+						supervisorPendingList.remove(supervisorPendingList.get(i));
+					}
+					break;
+				
 				}
-				}
-				supervisorsList.add(supervisorPendingList.get(i));
-				supervisorPendingList.remove(supervisorPendingList.get(i));
+				
 			}
+		}
+	}
 			else if(instruction.equals("Reject")){
-				Scanner in=new Scanner(System.in);
-				String name=in.nextLine();
-				if(supervisorsList.get(i).equals(name))
+
+				
+				for(int i=0;i<supervisorPendingList.size();i++){
+				if(supervisorPendingList.get(i).getUsername().equals(name))
 				{
 				supervisorPendingList.remove(supervisorPendingList.get(i));
 				}
 			}
-			else if(instruction.equals("Hold")){
-
-			}
 		}
+			else if(instruction.equals("Hold")){
+				System.out.println("request on hold");
+			}
+		
 		setSupervisorDatabase(supervisorsList);
 		setPendingSupervisorDatabase(supervisorPendingList);
+	}
+
+	public void approveLeaveSup(String instruction, Supervisor st){
+		ArrayList<Supervisor> ap = new ArrayList<Supervisor>();
+		if(instruction.equalsIgnoreCase("Accept")){
+			(Supervisor.getLeaveAppListSup()).remove(st);
+			st.setStatusSupervisor("On Leave");
+		}
+		else if(instruction.equalsIgnoreCase("Reject")){
+			(Supervisor.getLeaveAppListSup()).remove(st);
+		}
+
 	}
 
 	public ArrayList<Supervisor> getSupervisorDatabase(){

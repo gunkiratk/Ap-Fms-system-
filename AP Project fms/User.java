@@ -71,6 +71,6 @@ abstract class User{
 	}
 
 	public String toString(){
-		return "Name" + getName() + "\n" + "Username : " + getUsername() + "\n" + "User id : " + getId() + "\n" + "Date of Birth : " + getDob() + "\n" + "Address : " + getAddress() + "\n" + "Department : " + getDept() + "\n" + "Type : " + getType() + "\n" + "Password : " + getPassword() + "\n";
+		return "Name" + getName() + "\n" + "Username : " + getUsername() + "\n" + "User id : " + getId() + "\n" + "Date of Birth : " + getDob() + "\n" + "Address : " + getAddress() + "\n" + "Department : " + getDept() + "\n" + "Type : " + getType() + "\n" ;
 	}
 }
