@@ -2,9 +2,9 @@
 public class Staff extends User{
 	private String status;
 	Task task;
-	Staff()
+	Staff(String n,String i, String u, String d, String a, String de, String t,String p)
 	{
-		super(null,0,null,null,null,null,null,null);
+		super(n,i,u,d,a,de,t,p);
 	}
 	public void setTask(Task t){
 		task = t;
@@ -34,6 +34,9 @@ public class Staff extends User{
 	}
 	public void generate_taskreport()
 	{
+		
+	}
+	public void setTaskDatabase(){
 		
 	}
 }

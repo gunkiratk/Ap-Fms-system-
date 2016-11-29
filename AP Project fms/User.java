@@ -1,7 +1,7 @@
 // package fms;
 abstract class User{
 	private String name;
-	private int id;
+	private String id;
 	private String username;
 	private String dob;
 	private String address;
@@ -9,7 +9,7 @@ abstract class User{
 	private String type;
 	private String password;
 
-	public User(String n,int i, String u, String d, String a, String de, String t,String p){
+	public User(String n,String i, String u, String d, String a, String de, String t,String p){
 		name = n;
 		id = i;
 		username = u;
@@ -23,7 +23,7 @@ abstract class User{
 	public String getName(){
 		return name;
 	}
-	public int getId(){
+	public String getId(){
 		return id;
 	}
 	public String getUsername(){
@@ -48,7 +48,7 @@ abstract class User{
 	public void setName(String n){
 		this.name = n;
 	}
-	public void setId(int id){
+	public void setId(String id){
 		this.id = id;
 	}
 	public void setUsername(String u){

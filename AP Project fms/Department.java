@@ -2,7 +2,7 @@
 import java.util.*;
 abstract class Department{
 	List<Staff> Staffers=new ArrayList<Staff>();
-	Supervisor sv= new Supervisor();
+	// Supervisor sv= new Supervisor();
 	Department()
 	{
 
@@ -21,8 +21,6 @@ abstract class Department{
 	{
 
 	}
-	public Supervisor getSupervisor()
-	{
-		return sv;
-	}
+	public abstract Supervisor getSupervisor();
+	
 }

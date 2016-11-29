@@ -9,7 +9,7 @@ class Task{
 	private String comments;
 	String def_status = "NOT STARTED";
 
-	public Task(String tname, def_status, int tid, String d, String i, String tt, String c){
+	public Task(String tname,String def_status, int tid, String d, String i, String tt, String c){
 		taskname = tname;
 		status = def_status;
 		taskid = tid;

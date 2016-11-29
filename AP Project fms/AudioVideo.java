@@ -1,8 +1,13 @@
 // package fms;
-public class Audiovideo extends Department
+public class AudioVideo extends Department
 {
-	Audiovideo()
+	// Supervisor sv= new Supervisor();
+	AudioVideo()
 	{
 		
+	}
+	public Supervisor getSupervisor()
+	{
+		// return sv;
 	}
 }
