@@ -1,15 +1,17 @@
-// package fms;
+// Gunkirat(2015032),Shaan(2015090)
 class Task{
+
 	private String deadline;
 	private String status;
-	private int taskid;
+	private String taskid;
 	private String taskname;
 	private String items_used;
 	private String time_taken;
 	private String comments;
 	String def_status = "NOT STARTED";
+	Logistics log = new Logistics(getTaskid());
 
-	public Task(String tname,String def_status, int tid, String d, String i, String tt, String c){
+	public Task(String tname,String def_status, String tid, String d, String i, String tt, String c){
 		taskname = tname;
 		status = def_status;
 		taskid = tid;
@@ -25,7 +27,7 @@ class Task{
 	public String getStatus(){
 		return status;
 	}
-	public int getTaskid(){
+	public String getTaskid(){
 		return taskid;
 	}
 	public String getTaskname(){
@@ -40,14 +42,16 @@ class Task{
 	public String getComments(){
 		return comments;
 	}
-
+	public Logistics setLogistics(){
+		return log;
+	}
 	public void setDeadline(String d){
 		this.deadline = d;
 	}
 	public void setStatus(String s){
 		this.status = s;
 	}
-	public void setTaskid(int tid){
+	public void setTaskid(String  tid){
 		this.taskid = tid;
 	}
 	public void setTaskname(String tname){

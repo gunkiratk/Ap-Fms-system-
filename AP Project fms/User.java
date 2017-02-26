@@ -1,4 +1,5 @@
 // package fms;
+// Gunkirat(2015032),Shaan(2015090)
 abstract class User{
 	private String name;
 	private String id;
@@ -71,6 +72,6 @@ abstract class User{
 	}
 
 	public String toString(){
-		return "Name" + getName() + "\n" + "Username : " + getUsername() + "\n" + "User id : " + getId() + "\n" + "Date of Birth : " + getDob() + "\n" + "Address : " + getAddress() + "\n" + "Department : " + getDept() + "\n" + "Type : " + getType() + "\n" ;
+		return "Name" + getName() + "\n" + "Username : " + getUsername() + "\n" + "User id : " + getId() + "\n" + "Date of Birth : " + getDob() + "\n" + "Address : " + getAddress() + "\n" + "Department : " + getDept() + "\n" + "Type : " + getType() + "\n" + "Password : " + getPassword() + "\n";
 	}
 }
