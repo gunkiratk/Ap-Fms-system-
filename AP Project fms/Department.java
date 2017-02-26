@@ -3,7 +3,7 @@
 import java.util.*;
 abstract class Department{
 	List<Staff> Staffers=new ArrayList<Staff>();
-	// Supervisor sv= new Supervisor();
+	Supervisor sv;
 	Department()
 	{
 

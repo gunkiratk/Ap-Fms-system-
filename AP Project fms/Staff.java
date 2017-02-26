@@ -3,8 +3,6 @@
 import java.util.*;
 import java.sql.*;
 import java.io.*;
-// import com.text.*;
-// import com.text.pdf.*;
 public class Staff extends User{
 	private String status;
 	Task task;
@@ -50,8 +48,9 @@ public class Staff extends User{
 		}
 
 	}
-	public void generate_taskreport(String taskname)
-	{
+	public int generate_taskreport(String taskname)
+	{	
+
 			Task t=null;
 		BufferedReader br_2=null;
 		try{
@@ -80,13 +79,19 @@ public class Staff extends User{
             }
 
         	}	
-		
+		int count=0;
 		
 		BufferedWriter br_1 = null;
 			try{
-			br_1 = new BufferedWriter(new FileWriter("taskreport.txt"));{
+				count=0;
+			br_1 = new BufferedWriter(new FileWriter("taskreport.txt"));
+
+			if(t.getStatus().equalsIgnoreCase("COMPLETE"))
+			{
 				br_1.write(t.getTaskname()+","+t.getStatus()+","+t.getTaskid()+","+t.getDeadline()+","+t.getItems_used()+","+t.getTime_taken()+","+t.getComments()+"\n");
+				count++;
 			}
+			
 		}
 		
 		
@@ -104,16 +109,39 @@ public class Staff extends User{
             }
 
         	}	
-
+        	if(count==1)
+        		return 1;
+        	else
+        		return 0;
 		
-		//update only entries of this department in the staff database
 	}
 
-		
+	public void sendLogisticreq(String item_quan,String tfid)
+	{
+		Random ran=new Random();
+		int n=ran.nextInt(100)+1;
+		BufferedWriter br_1 = null;
+			try{
+			br_1 = new BufferedWriter(new FileWriter("logistic_staff.csv"));{
+				br_1.write(Integer.toString(n)+","+item_quan+","+tfid+"\n");
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally {
+                try {
+                br_1.close();
+            } catch (IOException ed) {
+                System.out.println("Error while flushing/closing fileWriter !!!");
+                ed.printStackTrace();
+            }
+
+        	}	
+	}	
 	
-	// public void setTaskDatabase(){
 		
-	// }
 	public static ArrayList<Staff> getLeaveAppList(){
 		return leaveAppList;
 	}

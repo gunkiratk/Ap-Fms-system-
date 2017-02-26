@@ -1,5 +1,5 @@
 // Gunkirat(2015032),Shaan(2015090)
-class Task{
+public class Task{
 
 	private String deadline;
 	private String status;
@@ -9,7 +9,7 @@ class Task{
 	private String time_taken;
 	private String comments;
 	String def_status = "NOT STARTED";
-	Logistics log = new Logistics(getTaskid());
+	Logistics log ;
 
 	public Task(String tname,String def_status, String tid, String d, String i, String tt, String c){
 		taskname = tname;
@@ -41,9 +41,6 @@ class Task{
 	}
 	public String getComments(){
 		return comments;
-	}
-	public Logistics setLogistics(){
-		return log;
 	}
 	public void setDeadline(String d){
 		this.deadline = d;

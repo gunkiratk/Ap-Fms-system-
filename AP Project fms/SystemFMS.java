@@ -1,5 +1,4 @@
 // package fms;
-// import net.java.dev.d/esigngridlayout.DesignGridLayout;
 // Gunkirat(2015032),Shaan(2015090)
 import java.util.*;
 import java.awt.*;
@@ -14,19 +13,18 @@ import java.awt.event.ActionListener;
 import java.text.*;
 import java.io.*;
 import javax.swing.*;
-public class SystemFMS{
+public class SystemFMS {
 
-	// ArrayList<Department> depts = new ArrayList<Department>();
-	// Admin admin = new Admin();
+	
 	Admin ad ;
+	ArrayList<Department> deps;
 	Supervisor sp;
 	Staff st;
 	JFrame frame;
 	JPanel panel;
 	JLabel label1,label2;
 	JButton bttn_str,bttn_exit;
-	String username_1;
-	String name_1,type_1,password_1,email_1,dob_1,address_1;
+	String username_1,name_1,type_1,password_1,email_1,dob_1,address_1;
 	String department_1="";
 	HashMap<String,String> login_credentials=new HashMap<String,String>();
 	SystemFMS(){
@@ -37,9 +35,13 @@ public class SystemFMS{
 		JLabel label2=new JLabel("System");
 		bttn_str=new JButton("Login");
 		bttn_exit=new JButton("Register");
+		JButton exit=new JButton("Exit");
 		bttn_exit.setBackground(Color.BLUE);
 		bttn_exit.setOpaque(true);
 		bttn_exit.setBorderPainted(false);
+		exit.setBackground(Color.BLUE);
+		exit.setOpaque(true);
+		exit.setBorderPainted(false);
 		bttn_str.setBackground(Color.BLUE);
 		bttn_str.setOpaque(true);
 		bttn_str.setBorderPainted(false);
@@ -50,14 +52,21 @@ public class SystemFMS{
 		label2.setFont(new Font("Arial",Font.BOLD,30));
 		bttn_str.setBounds(330,250,150,40);
 		bttn_exit.setBounds(350,350,100,40);
+		exit.setBounds(350,450,100,40);
 		panel.add(label1);
 		panel.add(label2);
 		panel.add(bttn_str);
 		panel.add(bttn_exit);
+		panel.add(exit);
 		panel.setBackground(new Color(255,255,244));
 		bttn_str.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ev){
 				new Login_Form();
+			}
+		});
+		exit.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ev){
+				System.exit(0);
 			}
 		});
 		bttn_exit.addActionListener(new ActionListener(){
@@ -71,17 +80,7 @@ public class SystemFMS{
 		frame.setVisible(true);
 	}
 
-	public void register(int id, String type, String username, String password, String dob, String address, String department){
-
-	}
-
-	public void login(String username, String password){
-
-	}
-
-	public void logout(){
-
-	}
+	
 	public class Login_Form
 	{
 		String type_1_login;
@@ -93,15 +92,21 @@ public class SystemFMS{
 			panel.setLayout(new FlowLayout());
 			JPanel panel2=new JPanel();
 			panel2.setLayout(new BoxLayout(panel2, BoxLayout.PAGE_AXIS));
-			final JPanel panel1=new JPanel();
+			panel2.setBackground(new Color(255,255,244));
+			JPanel panel1=new JPanel();
 			panel1.setLayout(new BoxLayout(panel1, BoxLayout.PAGE_AXIS));
+			panel1.setBackground(new Color(255,255,244));
+			JPanel panel3=new JPanel();
+			panel3.setLayout(new BoxLayout(panel3, BoxLayout.PAGE_AXIS));
+			panel3.setBackground(new Color(255,255,244));
 			panel2.setPreferredSize(new Dimension(130, 130));
 			panel1.setPreferredSize(new Dimension(130, 130));
-		 	JButton username=new JButton("Username");
+			JButton username=new JButton("Username");
 			JButton password=new JButton("Password");
 			JButton type =new JButton("Type");
-			final JTextField txt=new JTextField();
-			final JTextField txt5=new JPasswordField();
+			JButton back1=new JButton ("Back");
+			JTextField txt=new JTextField();
+			JTextField txt5=new JPasswordField();
 			JRadioButton admin = new JRadioButton("admin");
 			JRadioButton staff = new JRadioButton("staff");
       		JRadioButton supervisor = new JRadioButton("supervisor");
@@ -117,10 +122,15 @@ public class SystemFMS{
 			panel1.add(admin);
 			panel1.add(staff);
 			panel1.add(supervisor);
-			
+			panel3.add(back1);
 			panel.add(panel2);
 			panel.add(panel1);
-			
+			panel.add(panel3);
+			back1.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent e) { 
+         		new SystemFMS();
+         	}});    
+
 			admin.addItemListener(new ItemListener() {
          public void itemStateChanged(ItemEvent e) {         
             if(e.getStateChange()==1)
@@ -139,7 +149,6 @@ public class SystemFMS{
             	type_1_login="Supervisor";
          	}           
      		 });
-			// System.out.println(login_credentials);
 			JButton submit=new JButton("Submit");
 			JLabel error=new JLabel();
 
@@ -148,7 +157,7 @@ public class SystemFMS{
 				public void actionPerformed(ActionEvent e)
 				{	String username_1=txt.getText();
 					String password_1=txt5.getText();
-					// System.out.println(type_1_login);
+					
 					if(username_1.equals("") || password_1.equals(""))
 						{
 							JOptionPane.showMessageDialog(frame,"Invalid or empty field");
@@ -156,13 +165,15 @@ public class SystemFMS{
 						}
 						else
 						{
-					if(type_1_login=="Admin")
-					{	System.out.println("dede");
+						if(type_1_login=="Admin")
+						{	
+						// System.out.println("dede");
 						filename="admin.csv";
-						if(check_user_pass(filename,username_1,password_1)==1)
-							{System.out.println("chala");
-							new View_Admin();
-						}
+					if(check_user_pass(filename,username_1,password_1)==1)
+							{
+								System.out.println("chala");
+								new View_Admin();
+							}
 						else
 						{
 							JOptionPane.showMessageDialog(frame,"wrong username or password");
@@ -173,21 +184,33 @@ public class SystemFMS{
 					else if(type_1_login=="Supervisor")
 					{
 						filename="supervisor.csv";
-						if(check_user_pass(filename,username_1,password_1)==1)
+						if(check_user_pass(filename,username_1,password_1)==1 && check_user_pass("supervisor_pending.csv",username_1,password_1)==0)
 							new View_Supervisor(username_1);
+						else if(check_user_pass("supervisor_pending.csv",username_1,password_1)==1)
+						{
+							JOptionPane.showMessageDialog(frame,"Supervisor not approved");
+							new Login_Form();
+
+						}
 						else
 						{
 							JOptionPane.showMessageDialog(frame,"wrong username or password");
 							new Login_Form();
-							// frame.getContentPane().add(panel,BorderLayout.SOUTH);
+					
 
 						}
 					}
 					else if(type_1_login=="Staff")
 					{
 						filename="staff.csv";
-						if(check_user_pass(filename,username_1,password_1)==1)
+						if(check_user_pass(filename,username_1,password_1)==1 && check_user_pass("supervisor_pending.csv",username_1,password_1)==0)
 							new View_Staff(username_1);
+						else if(check_user_pass("staff_pending.csv",username_1,password_1)==1)
+						{
+							JOptionPane.showMessageDialog(frame,"Staff not approved");
+							new Login_Form();
+
+						}
 						else
 						{
 							JOptionPane.showMessageDialog(frame,"wrong username or password");
@@ -205,6 +228,29 @@ public class SystemFMS{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		}
 
+		public int check_user_pass_pending(String filename,String username_1,String password_1)
+		{int check=0;
+			BufferedReader br_1 = null;
+			try{
+			br_1 = new BufferedReader(new FileReader(filename));
+			String line_1;
+			while((line_1=br_1.readLine())!=null)
+			{	
+			String[] details=line_1.split(",");
+			if(details[2].equals(username_1))
+				check=1;
+			}
+		}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			if(check==1)
+				return 1;
+			else return 0;
+
+		}
+	
 		public int check_user_pass(String filename,String username_1,String password_1)
 		{int check=0;
 			BufferedReader br_1 = null;
@@ -214,8 +260,6 @@ public class SystemFMS{
 			while((line_1=br_1.readLine())!=null)
 			{	
 			String[] details=line_1.split(",");
-			System.out.println(details[2]+details[7]);
-			System.out.println(username_1+password_1);
 			if(details[2].equals(username_1) && details[7].equals(password_1))
 				check=1;
 			System.out.println(check);
@@ -231,7 +275,7 @@ public class SystemFMS{
 
 		}
 	}
-	public class Register_Form 
+	public class Register_Form extends databasetemplate
 	{
 		int x;
 		Register_Form()
@@ -241,27 +285,28 @@ public class SystemFMS{
 			panel.setLayout(new FlowLayout());
 			JPanel panel2=new JPanel();
 			panel2.setLayout(new BoxLayout(panel2, BoxLayout.PAGE_AXIS));
+			panel2.setBackground(new Color(255,255,244));
 			JPanel panel1=new JPanel();
 			panel1.setLayout(new BoxLayout(panel1, BoxLayout.PAGE_AXIS));
-			panel2.setPreferredSize(new Dimension(110, 350));
+			panel1.setBackground(new Color(255,255,244));
+			panel2.setPreferredSize(new Dimension(200, 350));
 			panel1.setPreferredSize(new Dimension(300, 350));
 			JButton type=new JButton("Type");
 			JButton name=new JButton("Name");
 			JButton username=new JButton("Username");
 			JButton email=new JButton("Email");
 			JButton password=new JButton("Password");
-			JButton dob=new JButton("Date of birth");
+			JButton dob=new JButton("Date of birth(dd/mm/yyyy)");
 			JButton address=new JButton("Address");
 			JButton department=new JButton("Department");
-			// type.setBounds(150,0,800,50);
-			// JLabel empty=new JLabel("");
-			final JTextField txt=new JTextField();
-			final JTextField txt2=new JTextField();
-			final JTextField txt3=new JTextField();
-			final JTextField txt4=new JTextField();
-			final JTextField txt5=new JPasswordField();
-			final JTextField txt6=new JTextField();
-			final JTextField txt7=new JTextField();
+			JButton back=new JButton("Back");
+			JTextField txt=new JTextField();
+			JTextField txt2=new JTextField();
+			JTextField txt3=new JTextField();
+			JTextField txt4=new JTextField();
+			JTextField txt5=new JPasswordField();
+			JTextField txt6=new JTextField();
+			JTextField txt7=new JTextField();
 
 			txt2.setPreferredSize(new Dimension(40, 100));
 			txt3.setPreferredSize(new Dimension(40, 120));
@@ -285,20 +330,15 @@ public class SystemFMS{
 			group.add(security);
 			group.add(other);
 			panel2.add(type);
-			// panel2.add(empty);
 			panel2.add(name);
-			// panel2.add(empty);
 			panel2.add(username);
 			panel2.add(email);
 			panel2.add(password);
 			panel2.add(dob);
 			panel2.add(address);
 			panel2.add(department);
-			// panel2.add(empty);
 			panel1.add(txt);
-			// panel2.add(name);
 			panel1.add(txt2);
-			// panel2.add(username);
 			panel1.add(txt3);
 			panel1.add(txt4);
 			panel1.add(txt5);
@@ -313,6 +353,12 @@ public class SystemFMS{
 			panel.add(panel2);
 			panel.add(panel1);
 
+			back.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e)
+				{
+					new SystemFMS();
+				}
+			});
 			elec.addItemListener(new ItemListener() {
          public void itemStateChanged(ItemEvent e) {         
             if(e.getStateChange()==1)
@@ -366,80 +412,121 @@ public class SystemFMS{
 				{
 					JOptionPane.showMessageDialog(frame,"Invalid or empty field");
 					new Register_Form();
-				}
-			// public static final Pattern VALID_EMAIL_ADDRESS_REGEX = 
-   // 			 Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
-			// 	public static boolean validate(String emailStr) {
-   //      		Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
-   //      		if(!(matcher.find()))
-   //      		JOptionPane.showMessageDialog(frame,"Invalid email address");
-           // Action that you want to take. For ex. make email id field red
-           // or give message box saying invalid email id.
-        
-   			else{	// }
-			System.out.println(txt.getText()+txt2.getText());
+		
+        }
+   			else{	
+   				if(check_date(dob_1)==1)
+				{
+					if(check_email(email_1)==1)
+				{
 					Random generator=new Random();
 					x=generator.nextInt(10000)+1;
-					System.out.println(x);
-					// list=new User()
-				
-			
-			System.out.println(type_1);
-			if(type_1.equalsIgnoreCase("Admin"))
-			{
-				// admin_write();
-				if(GetDatabase("admin.csv")==0)
+					System.out.println(x);			
+					System.out.println(type_1);
+					if(type_1.equalsIgnoreCase("Admin"))
+					{
+				if(GetDatabase("admin.csv")==-1)
 					{
 					System.out.println("One admin already existes");
-					JLabel l=new JLabel("One admin already exists");
-					// JPanel p1=new JPanel();
-					panel1.add(l);
-					// frame.getContentPane().add(p1,BorderLayout.SOUTH);
+					JOptionPane.showMessageDialog(frame,"Admin already exists");
 				}
 				else
 				{User dat = new Admin(name_1,Integer.toString(x),username_1,dob_1,address_1,department_1,type_1,password_1);
-				// Admin ad=new Admin(name_1,Integer.toString(x),username_1,dob_1,address_1,department_1,type_1,password_1);
-				login_credentials.put(ad.getUsername(),ad.getPassword());
-				System.out.print("Admin created :");
-				System.out.println(ad.getUsername());
 				writeCsvDatabase("admin.csv",dat);
 				}
 			}
 			else if(type_1.equalsIgnoreCase("Supervisor"))
 			{	if(GetDatabase("admin.csv")!=0)
 				{User s= new Supervisor(name_1,Integer.toString(x),username_1,dob_1,address_1,department_1,type_1,password_1);
-				// supervisor_write(s);
-				login_credentials.put(s.getUsername(),s.getPassword());
 				writeCsvDatabase("supervisor_pending.csv",s);
 				}
 				else
 				{
-					System.out.println("No admin registered");
-					JLabel l=new JLabel("No admin registered");
-					frame.getContentPane().add(l,BorderLayout.SOUTH);
+					JOptionPane.showMessageDialog(frame,"No admin registered");
+					new Register_Form();
 				}
 			}
 			else if(type_1.equalsIgnoreCase("Staff"))
 			{
 				if(GetDatabase("admin.csv")!=0)
 				{User s= new Staff(name_1,Integer.toString(x),username_1,dob_1,address_1,department_1,type_1,password_1);
-				// staff_write(s);
-				login_credentials.put(s.getUsername(),s.getPassword());
 				writeCsvDatabase("staff_pending.csv",s);
 			}
 			else{
-				System.out.println("No admin registered");
-					JLabel l=new JLabel("No admin registered");
-					frame.getContentPane().add(l,BorderLayout.SOUTH);
+				JOptionPane.showMessageDialog(frame,"No admin registered");
+					new Register_Form();
 				}
 			}
-			new Login_Form();
+		}
+			else
+			{
+				JOptionPane.showMessageDialog(frame,"Email not valid");
+				new Register_Form();
+				
+			}
+		}
+			else
+			{
+				JOptionPane.showMessageDialog(frame,"Date of birth not valid");
+				new Register_Form();
+				
+			}
+		
+			new SystemFMS();
 		}
 		}	
     	});
 		panel.add(submit);
+		panel.add(back);
 		frame.getContentPane().add(panel,BorderLayout.CENTER);
+    	}
+    	public int check_email(String name)
+    	{
+    		int count=0;
+    		for(int i=0;i<name.length();i++)
+    		{
+    			if(name.charAt(i)=='@' && i!=0)
+    			{
+    				for(int j=i+1;j<name.length();j++)
+    				{
+    					if(name.charAt(j)=='.' && j<(name.length()-1))
+    						{	System.out.println("in");
+    							count++;
+    						break;
+    					}
+    				}
+    			}
+    		}
+    		System.out.println(count);
+    		if(count==1)
+    			return 1;
+    		else
+    			 return 0;
+    	}
+    	public int check_date(String name)
+    	{
+    		if(name.length()==10)
+    		{	System.out.println("1");
+    			if(name.charAt(2)=='/' && name.charAt(5)=='/' )
+    				{	System.out.println("2");
+    					if((name.charAt(3)=='0' && name.charAt(4)<='9' && name.charAt(4)>'0' ) ||(name.charAt(3)=='1' && name.charAt(4)<='2' && name.charAt(4)>'0'))
+    					{	System.out.println("3");
+    						if(name.charAt(6)=='1' && name.charAt(7)=='9')
+    						{	System.out.println("1");
+    							return 1;
+    						}
+    						else
+    							return 0;
+    					}
+    					else
+    						return 0;
+
+    				}
+    				else
+    					return 0;		
+    		}
+    		else
+    			return 0;
     	}
     	public void writeCsvDatabase(String filename,User s)
     	{
@@ -450,8 +537,6 @@ public class SystemFMS{
 				FileWriter fileWriter = null;
 			 	 try {
 			     	fileWriter = new FileWriter(filename,true);	
-            		// fileWriter.append(FILE_HEADER.toString());
-            		// fileWriter.append(NEW_LINE_SEPARATOR);
 					fileWriter.append(String.valueOf(s.getId()));
 				    fileWriter.append(COMMA_DELIMITER);
 					fileWriter.append(s.getName());
@@ -488,7 +573,6 @@ public class SystemFMS{
     		BufferedReader filereader=null;
     		try{
     			filereader=new BufferedReader(new FileReader(filename));
-    			// String line_1=filereader.readLine();
     			if(filereader.readLine()!=null)
     				read_1=1;
     		}
@@ -510,7 +594,7 @@ public class SystemFMS{
 	
 	public class View_Admin
 	{	JButton sup=null,sta=null,supview=null,staview=null,supdel=null,stadel=null,accept=null,reject=null,hold=null;
-		JPanel panel1,panel2,panel3,panel4;
+		JPanel panel1,panel2,panel3,panel4,panel5;
 		View_Admin()
 		{
 			
@@ -518,13 +602,14 @@ public class SystemFMS{
 			panel.updateUI();
 			panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 			panel1=new JPanel(new FlowLayout(FlowLayout.LEADING, 5, 60));
+			panel1.setBackground(new Color(255,255,244));
 			JButton home=new JButton("Home");
 			JButton staff=new JButton("Add ");
 			JButton view_2=new JButton("View");
 			JButton delete_2=new JButton("Delete");
 			JButton task=new JButton("Assign Task");
-			JButton request=new JButton("Request");
-			JButton exit=new JButton("exit");
+			JButton request=new JButton(" Approve/Reject Request");
+			JButton logout=new JButton("logout");
 			JLabel lbl=new JLabel(" Welcome Admin");
 			JLabel timeLabel = new JLabel();
 			panel1.add(lbl);
@@ -533,18 +618,18 @@ public class SystemFMS{
 			panel1.add(view_2);
 			panel1.add(delete_2);
 			panel1.add(task);
-			// panel.add(request);
-			panel.add(new JLabel(""));
+			panel1.add(request);
+			panel1.add(new JLabel(""));
 			panel.add(panel1);
 			Date today = Calendar.getInstance().getTime();
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh.mm.ss");
 			String date1 = formatter.format(today);
 			timeLabel.setText(date1);
 			panel1.add(timeLabel);
-			panel1.add(exit);
-			exit.addActionListener(new ActionListener(){
+			panel1.add(logout);
+			logout.addActionListener(new ActionListener(){
          		public void actionPerformed(ActionEvent e) {  
-         			 System.exit(0);
+         			 new SystemFMS();
  				}
          	});
 			
@@ -557,31 +642,27 @@ public class SystemFMS{
          	staff.addActionListener(new ActionListener(){
          		public void actionPerformed(ActionEvent e) {  
          			panel2=new JPanel(new FlowLayout());
+         			panel2.setBackground(new Color(255,255,244));
          			System.out.println("Add");
          			sup = new JButton("Supervisor");
          			sta = new JButton("Staff");
-         			// back = new JButton("back");
-         			//panel.removeAll();
-					//panel.updateUI();
          			panel2.add(sup);
          			panel2.add(sta);
-         			// panel1.add(back);
          			panel.add(panel2);
          			panel.updateUI();
          			frame.getContentPane().add(panel,BorderLayout.CENTER);
          			
          			sup.addActionListener(new ActionListener(){
          			public void actionPerformed(ActionEvent e){
-         			
-         	
          				JLabel l=new JLabel("Enter instruction");
-         				final JTextField intruct=new JTextField();
+         				JTextField intruct=new JTextField();
          				intruct.setPreferredSize(new Dimension(100, 40));
          				JLabel l1=new JLabel("Enter username");
          				JTextField user=new JTextField();
          				user.setPreferredSize(new Dimension(100, 40));
          				JButton submit= new JButton("Submit");
-         				JPanel panel5=new JPanel(new FlowLayout());
+         				 panel5=new JPanel(new FlowLayout());
+         				panel5.setBackground(new Color(255,255,244));
          				panel5.add(l);
          				panel5.add(intruct);
          				panel5.add(l1);
@@ -589,7 +670,6 @@ public class SystemFMS{
          				panel5.add(submit);
          				panel.add(panel5);
          				panel.updateUI();
-         				// frame.getContentPane().add(panel,BorderLayout.CENTER);
          				submit.addActionListener(new ActionListener()
          				{
          					public void actionPerformed(ActionEvent e){
@@ -599,13 +679,15 @@ public class SystemFMS{
          						System.out.println(line);
 								int check=ad.approveSupervisorMember(line,name);
 								JPanel panel6=new JPanel();
+								panel6.setBackground(new Color(255,255,244));
+								System.out.println(check);
 								if(check==1)
 									panel6.add(new JLabel("supervisor intstructed"));
 								else 
 									panel6.add(new JLabel("supervisor not instructed"));
 								panel.add(panel6);
 								panel.updateUI();
-								// frame.getContentPane().add(panel,BorderLayout.CENTER);
+								
          					}
          				});
          			}
@@ -613,16 +695,15 @@ public class SystemFMS{
 
          				sta.addActionListener(new ActionListener(){
          			public void actionPerformed(ActionEvent e){
-         			
-         	
-         				JLabel l=new JLabel("Enter instruction");
+           				JLabel l=new JLabel("Enter instruction");
          				JTextField intruct=new JTextField();
          				intruct.setPreferredSize(new Dimension(100, 40));
          				JLabel l1=new JLabel("Enter username");
          				JTextField user=new JTextField();
          				user.setPreferredSize(new Dimension(100, 40));
          				JButton submit= new JButton("Submit");
-         				JPanel panel5=new JPanel(new FlowLayout());
+         				 panel5=new JPanel(new FlowLayout());
+         				panel5.setBackground(new Color(255,255,244));
          				panel5.add(l);
          				panel5.add(intruct);
          				panel5.add(l1);
@@ -640,6 +721,7 @@ public class SystemFMS{
          						System.out.println(name);
 								int check=ad.approveStaffMember(line,name);
 								JPanel panel6=new JPanel();
+								panel6.setBackground(new Color(255,255,244));
 								System.out.println(check);
 								if(check==1)
 									panel6.add(new JLabel("staff intstructed"));
@@ -660,27 +742,23 @@ public class SystemFMS{
          		public void actionPerformed(ActionEvent e) {  
          			System.out.println("Add");
          			 panel3=new JPanel(new FlowLayout());
+         			 panel3.setBackground(new Color(255,255,244));
          			 supview = new JButton("Supervisor");
          			staview = new JButton("Staff");
-         			 // back = new JButton("back");
-         			// panel1.removeAll();
-					// panel.remove(panel2);
          			panel3.add(supview);
          			panel3.add(staview);
-         			// panel1.add(back);
          			panel.add(panel3);
          			panel.updateUI();
-         			// frame.getContentPane().add(panel,BorderLayout.CENTER);  
          			supview.addActionListener(new ActionListener()
          				{
          					public void actionPerformed(ActionEvent e){ 
          						
          						ad.viewSupervisor();
          						JPanel panel6=new JPanel();
+         						panel6.setBackground(new Color(255,255,244));
          						panel6.add(new JLabel("VIEWED ON CONSOLE"));
          						panel.add(panel6);
 								panel.updateUI();
-								// frame.getContentPane().add(panel,BorderLayout.CENTER);
 
          					}    
             		
@@ -688,13 +766,12 @@ public class SystemFMS{
          			staview.addActionListener(new ActionListener()
          				{
          					public void actionPerformed(ActionEvent e){ 
-         						
          						ad.viewStaff();
          						JPanel panel6=new JPanel();
          						panel6.add(new JLabel("Viewed on console"));
+         						panel6.setBackground(new Color(255,255,244));
          						panel.add(panel6);
 								panel.updateUI();
-								// frame.getContentPane().add(panel,BorderLayout.CENTER);
 
          					}    
             		
@@ -704,14 +781,12 @@ public class SystemFMS{
          	delete_2.addActionListener(new ActionListener(){
          		public void actionPerformed(ActionEvent e) {  
          			panel2=new JPanel(new FlowLayout());
+         			panel2.setBackground(new Color(255,255,244));
          			System.out.println("Add");
          			 supdel = new JButton("Supervisor");
          			 stadel = new JButton("Staff");
-         			 // back = new JButton("back");
-         			// panel.remove(panel1);
          			panel2.add(supdel);
          			panel2.add(stadel);
-         			// panel1.add(back);
          			panel.add(panel2);
          			panel.updateUI();
          			frame.getContentPane().add(panel,BorderLayout.CENTER);  
@@ -721,31 +796,28 @@ public class SystemFMS{
          				JTextField user=new JTextField();
          				user.setPreferredSize(new Dimension(100, 40));
          				JButton submit= new JButton("Submit");
-         				JPanel panel5=new JPanel(new FlowLayout());
-         				// panel5.add(l);
-         				// panel5.add(intruct);
+         				panel5=new JPanel(new FlowLayout());
+         				panel5.setBackground(new Color(255,255,244));
          				panel5.add(l1);
          				panel5.add(user);
          				panel5.add(submit);
          				panel.add(panel5);
          				panel.updateUI();
-         				// frame.getContentPane().add(panel,BorderLayout.CENTER);
          				submit.addActionListener(new ActionListener()
          				{
          					public void actionPerformed(ActionEvent e){
          						System.out.println("in action");
-         						// String line=intruct.getText();
          						String name=user.getText();
          						System.out.println(name);
 								int check=ad.deleteSupervisor(name);
 								JPanel panel6=new JPanel();
+								panel6.setBackground(new Color(255,255,244));
 								if(check==1)
 									panel6.add(new JLabel("supervisor deleted"));
 								else 
 									panel6.add(new JLabel("supervisor not deleted"));
 								panel.add(panel6);
 								panel.updateUI();
-								// frame.getContentPane().add(panel,BorderLayout.CENTER);
          					}
          				});
          			}
@@ -756,31 +828,27 @@ public class SystemFMS{
          				JTextField user=new JTextField();
          				user.setPreferredSize(new Dimension(100, 40));
          				JButton submit= new JButton("Submit");
-         				JPanel panel5=new JPanel(new FlowLayout());
-         				// panel5.add(l);
-         				// panel5.add(intruct);
+         				 panel5=new JPanel(new FlowLayout());
+         				panel5.setBackground(new Color(255,255,244));
          				panel5.add(l1);
          				panel5.add(user);
          				panel5.add(submit);
          				panel.add(panel5);
          				panel.updateUI();
-         				// frame.getContentPane().add(panel,BorderLayout.CENTER);
          				submit.addActionListener(new ActionListener()
          				{
          					public void actionPerformed(ActionEvent e){
          						System.out.println("in action");
-         						// String line=intruct.getText();
          						String name=user.getText();
-         						// System.out.println(line);
 								int check=ad.deleteStaff(name);
 								JPanel panel6=new JPanel();
+								panel6.setBackground(new Color(255,255,244));
 								if(check==1)
 									panel6.add(new JLabel("staff deleted"));
 								else 
 									panel6.add(new JLabel("staff not deleted"));
 								panel.add(panel6);
 								panel.updateUI();
-								// frame.getContentPane().add(panel,BorderLayout.CENTER);
          					}
          				});
          			}
@@ -795,24 +863,23 @@ public class SystemFMS{
          				JTextField user=new JTextField();
          				user.setPreferredSize(new Dimension(100, 40));
          				JLabel l2=new JLabel("Enter taskname");
-         				final JTextField user2=new JTextField();
+         				JTextField user2=new JTextField();
          				user2.setPreferredSize(new Dimension(100, 40));
          				JLabel l3=new JLabel("Enter deadline");
-         				final JTextField user3=new JTextField();
+         				JTextField user3=new JTextField();
          				user3.setPreferredSize(new Dimension(100, 40));
          				JLabel l4=new JLabel("Enter items used");
-         				final JTextField user4=new JTextField();
+         				JTextField user4=new JTextField();
          				user4.setPreferredSize(new Dimension(100, 40));
          				JLabel l5=new JLabel("Enter timetaken");
-         				final JTextField user5=new JTextField();
+         				JTextField user5=new JTextField();
          				user5.setPreferredSize(new Dimension(100, 40));
          				JLabel l6=new JLabel("Enter comments");
-         				final JTextField user6=new JTextField();
+         				JTextField user6=new JTextField();
          				user6.setPreferredSize(new Dimension(100, 40));
          				JButton submit= new JButton("Submit");
          				JPanel panel5=new JPanel(new FlowLayout());
-         				// panel5.add(l);
-         				// panel5.add(intruct);
+         				panel5.setBackground(new Color(255,255,244));
          				panel5.add(l1);
          				panel5.add(user);
          				panel5.add(l2);
@@ -832,91 +899,70 @@ public class SystemFMS{
          				{
          					public void actionPerformed(ActionEvent e){
          						System.out.println("in action");
-         						// String line=intruct.getText();
          						String dept=user.getText();
          						String tname=user2.getText();
          						String deadline=user3.getText();
          						String i=user4.getText();
          						String tt=user5.getText();
          						String comm=user6.getText();
-         						// System.out.println(line);
          							Random num=new Random();
 								int n=num.nextInt(99)+1;
 								int check=ad.assignTasktoSupervisor(dept,tname,deadline,"NOT STARTED",Integer.toString(n),i,tt,comm);
 								JPanel panel6=new JPanel();
+								panel6.setBackground(new Color(255,255,244));
 								if(check==1)
 									panel6.add(new JLabel("Tassked assigned to supervisor of "+dept));
 								else 
 									panel6.add(new JLabel("no supervisor of "+dept+"exists"));
 								panel.add(panel6);
 								panel.updateUI();
-								// frame.getContentPane().add(panel,BorderLayout.CENTER);
          					}
          				});
          			}
          		});
 
-         
+         request.addActionListener(new ActionListener()
+         		{
+         			public void actionPerformed(ActionEvent e){
+         				JLabel l3=new JLabel("Enter instruction");
+         				JTextField user3=new JTextField();
+         				user3.setPreferredSize(new Dimension(100, 40));
+         				JLabel l1=new JLabel("Enter Task id");
+         				JTextField user=new JTextField();
+         				user.setPreferredSize(new Dimension(100, 40));
+         				JButton submit=new JButton("Submit");
+         				JPanel panel5=new JPanel(new FlowLayout());
+         				panel5.add(l3);
+         				panel5.setBackground(new Color(255,255,244));
+         				panel5.add(user3);
+         				panel5.add(l1);
+         				panel5.add(user);
+         				panel.add(panel5);
+         				panel5.add(submit);
+         				panel.updateUI();
+         			submit.addActionListener(new ActionListener()
+         				{
+         					public void actionPerformed(ActionEvent e){
+         						System.out.println("in action");
+         						String instruction=user3.getText();
+         						String taskid=user.getText();
+         						int check=ad.approveLog(taskid,instruction);
+         						JPanel panel6=new JPanel();
+         						panel6.setBackground(new Color(255,255,244));
+         						if(check==1)
+         							panel6.add(new JLabel("Logistics request instructed"));
+         						else
+         							panel6.add(new JLabel("Logistics request not instructed"));
+         							panel.add(panel6);
+         							panel.updateUI();
+         					}
+         				});
+         		}
+         		});
          	
 			frame.getContentPane().add(panel,BorderLayout.CENTER);
-			// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			System.out.println(ad.getName());
-			// Scanner scan=new Scanner(System.in);
-			// // System.out.println("1.Add Supervisor");
-			// // System.out.println("2.View Supervisor");
-			// // System.out.println("3.Delete Supervisor");
-			// // System.out.println("4.Add Staff");
-			// // System.out.println("5.View Staff");
-			// // System.out.println("6.Delete Staff");
-			// System.out.println("7.AssignTask");
-			// System.out.println("8.Approve log");
-			// System.out.println("9.Reject log");
-			// int x=scan.nextInt();
-			// Scanner in=new Scanner(System.in);
-			// while(x!=9){
-
-			// if(x==1)
-			// 	{	String line=in.nextLine();
-			// 		ad.approveSupervisorMember(line);
-			// 	}
-			// else if(x==2)
-			// {
-			// 	ad.viewSupervisor();
-			// }
-			// else if(x==3)
-			// {
-			// 	String name=in.nextLine();
-			// 	ad.deleteSupervisor(name);
-			// }
-			// else if(x==4)
-			// {
-			// 	String line=in.nextLine();
-			// 	ad.approveStaffMember(line);
-			// }
-			// else if(x==5)
-			// {
-			// 	ad.viewStaff();
-			// }
-			// else if(x==6)
-			// {
-			// 	String name=in.nextLine();
-			// 	ad.deleteStaff(name);
-			// }
-			// else if(x==7)
-			// {
-			// 	String dept=in.nextLine();
-			// 	String taskname=in.nextLine();
-			// 	String deadline=in.nextLine();
-			// 	String iused=in.nextLine();
-			// 	String time=in.nextLine();
-			// 	String comm=in.nextLine();
-			// 	Random num=new Random();
-			// 	int n=num.nextInt(99)+1;
-			// 	ad.assignTasktoSupervisor(dept,taskname,deadline,"NOT STARTED",Integer.toString(n),iused,time,comm);
-			// }
-			// x=scan.nextInt();
-
-		// }
+		
 	}	
 	}
 
@@ -931,13 +977,12 @@ public class SystemFMS{
 			panel.updateUI();
 			panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 			panel1=new JPanel(new FlowLayout(FlowLayout.LEADING, 5, 60));
-			// panel1.setLayout(new FlowLayout(FlowLayout.LEADING, 3, 60));
 			JButton home=new JButton("Home");
 			JButton task_report=new JButton("Task Report");
 			JButton log=new JButton("Send Logistic");
 			JButton status=new JButton("Update Status");
 			JButton leave=new JButton("Leave");
-			JButton exit=new JButton("Exit");
+			JButton logout=new JButton("Logout");
 			JLabel lbl=new JLabel("");
 			JLabel timeLabel = new JLabel();
 			panel1.add(lbl);
@@ -946,21 +991,57 @@ public class SystemFMS{
 			panel1.add(log);
 			panel1.add(task_report);
 			panel1.add(leave);
+			panel1.setBackground(new Color(255,255,244));
 			
 			Date today = Calendar.getInstance().getTime();
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh.mm.ss");
 			String date1 = formatter.format(today);
 			timeLabel.setText(date1);
 			panel1.add(timeLabel);
-			panel1.add(exit);
+			panel1.add(logout);
 			panel.add(panel1);
 			frame.getContentPane().add(panel,BorderLayout.CENTER);
 			read_staff(username_1);
-			exit.addActionListener(new ActionListener(){
+			logout.addActionListener(new ActionListener(){
          		public void actionPerformed(ActionEvent e) { 
-         			System.exit(0);
+         			new SystemFMS();
          			}
          			});
+			log.addActionListener(new ActionListener(){
+         		public void actionPerformed(ActionEvent e) {
+         		  
+         		JLabel l2=new JLabel("Enter quantity");
+         		JTextField intruct2=new JTextField();
+         		intruct2.setPreferredSize(new Dimension(100, 40));
+         		JLabel l=new JLabel("Enter Taskid");
+         		JTextField intruct=new JTextField();
+         		intruct.setPreferredSize(new Dimension(100, 40));
+         		JButton submit =new JButton("Submit");
+         		JPanel panel5=new JPanel(new FlowLayout());
+         		panel5.setBackground(new Color(255,255,244));
+         		panel5.add(l2);
+         		panel5.add(intruct2);
+         		panel5.add(l);
+         		panel5.add(intruct);
+         		panel5.add(submit);
+         		panel.add(panel5);
+         		panel.updateUI();
+
+         	
+         	submit.addActionListener(new ActionListener(){
+         		public void actionPerformed(ActionEvent e) { 
+         		String id=intruct.getText();
+         		String quantity=intruct2.getText();
+         		st.sendLogisticreq(quantity,id);
+         		JPanel panel6=new JPanel();
+         		panel6.setBackground(new Color(255,255,244));
+         			panel6.add(new JLabel("Logistics send to supervisor"));
+         		panel.add(panel6);
+         		panel.updateUI();
+         }
+     });
+         		}
+         		});  
          	home.addActionListener(new ActionListener(){
          		public void actionPerformed(ActionEvent e) {  
          		new View_Staff(username_1);
@@ -973,6 +1054,7 @@ public class SystemFMS{
          				intruct.setPreferredSize(new Dimension(100, 40));
          				JButton submit =new JButton("Submit");
          				panel2=new JPanel(new FlowLayout(FlowLayout.LEADING, 5, 60));
+         				panel2.setBackground(new Color(255,255,244));
          				panel2.add(l);
          				panel2.add(intruct);
          				panel2.add(submit);
@@ -983,6 +1065,7 @@ public class SystemFMS{
          		String update=intruct.getText();
          		st.updateStatus(update,st);
          		JPanel panel6=new JPanel();
+         		panel6.setBackground(new Color(255,255,244));
          		panel6.add(new JLabel("status updated to "+update));
          		panel.add(panel6);
          		panel.updateUI();
@@ -993,11 +1076,32 @@ public class SystemFMS{
 
          		leave.addActionListener(new ActionListener(){
          		public void actionPerformed(ActionEvent e) { 
+         		JLabel l=new JLabel("Enter end Date");
+         			JTextField intruct=new JTextField();
+         			intruct.setPreferredSize(new Dimension(100, 40));
+         			JLabel l1=new JLabel("Reason");
+         			JTextField reason=new JTextField();
+         			reason.setPreferredSize(new Dimension(100, 40));
+         			JButton submit =new JButton("Submit");
+         			panel2=new JPanel(new FlowLayout(FlowLayout.LEADING, 5, 60));
+         			panel2.setBackground(new Color(255,255,244));
+         			panel2.add(l);
+         			panel2.add(intruct);
+         			panel2.add(l1);
+         			panel2.add(reason);
+         			panel2.add(submit);
+         			panel.add(panel2);
+         			panel.updateUI();
+         			submit.addActionListener(new ActionListener(){
+         		public void actionPerformed(ActionEvent e) { 	
          			st.sendLeave();
          			JPanel panel6=new JPanel();
+         			panel6.setBackground(new Color(255,255,244));
          		panel6.add(new JLabel("Leave request send"));
          		panel.add(panel6);
          		panel.updateUI();
+         		}
+         	});
          		}
          	});
          		task_report.addActionListener(new ActionListener(){
@@ -1007,6 +1111,7 @@ public class SystemFMS{
          			intruct.setPreferredSize(new Dimension(100, 40));
          			JButton submit =new JButton("Submit");
          			panel2=new JPanel(new FlowLayout(FlowLayout.LEADING, 5, 60));
+         			panel2.setBackground(new Color(255,255,244));
          			panel2.add(l);
          			panel2.add(intruct);
          			panel2.add(submit);
@@ -1015,9 +1120,13 @@ public class SystemFMS{
          			submit.addActionListener(new ActionListener(){
          		public void actionPerformed(ActionEvent e) { 	
          			String update=intruct.getText();
-         			st.generate_taskreport(update);
+         			int check=st.generate_taskreport(update);
          			JPanel panel6=new JPanel();
-         		panel6.add(new JLabel("Task report generated"));
+         			panel6.setBackground(new Color(255,255,244));
+         			if(check==1)
+         				panel6.add(new JLabel("Task report generated"));
+         			else
+         				panel6.add(new JLabel("Task report not generated"));
          		panel.add(panel6);
          		panel.updateUI();
          		}
@@ -1026,47 +1135,11 @@ public class SystemFMS{
      });
 
          		frame.getContentPane().add(panel,BorderLayout.CENTER);
-			// frame.getContentPane().add(panel,BorderLayout.CENTER);
-
-		// 	System.out.println("4.update status");
-		// 	System.out.println("5.send leave");
-		// 	System.out.println("6.generate");
-		// 	System.out.println("7.AssignTask");
-		// 	System.out.println("8.Approve log");
-		// 	System.out.println("9.Reject log");
-		// 	Scanner scan =new Scanner(System.in);
-		// 	int x=scan.nextInt();
-		// 	Scanner in=new Scanner(System.in);
-		// 	while(x!=9){
-		// 	if(x==4)
-		// 	{
-		// 		String line=in.nextLine();
-		// 		st.updateStatus(line,st);
-		// 	}
-		// 	else if(x==5)
-		// 	{
-		// 		st.sendLeave();
-		// 	}
-		// 	else if(x==6)
-		// 	{
-				
-		// 		// st.generate_taskReport();
-		// 	}
-		// 	else if(x==7)
-		// 	{
-		// 		String taskname=in.nextLine();
-		// 		int n=in.nextInt();
-
-		// 		sp.assignTasktoStaff(taskname,n,sp);
-		// 	}
-
-		// 	x=scan.nextInt();
-		// }
-
+			
 			
 		}
 	}
-		public class View_Supervisor
+public class View_Supervisor
 	{
 		JButton sup=null,sta=null,supview=null,staview=null,supdel=null,stadel=null,accept=null,reject=null,hold=null;
 		JPanel panel1,panel2,panel3,panel4;
@@ -1077,16 +1150,18 @@ public class SystemFMS{
 			panel.updateUI();
 			panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 			panel1=new JPanel(new FlowLayout(FlowLayout.LEADING, 5, 60));
+			panel1.setBackground(new Color(255,255,244));
 			JButton home=new JButton("Home");
 			JButton staff=new JButton("Add ");
 			JButton view_2=new JButton("View");
 			JButton delete_2=new JButton("Delete");
 			JButton leave=new JButton("Leave");
 			JButton task=new JButton("AssignTask");
-			// JButton maintain=new JButton("Maintain Logistics");
-			// JButton sendLog=new JButton("Send Logistics");
+			JButton maintain=new JButton("Maintain Logistics");
+			JButton sendLog=new JButton("Send Logistics");
+			JButton approve=new JButton("Approve Logistic");
 			JButton view=new JButton("View Task");
-			JButton exit=new JButton("Exit");
+			JButton logout=new JButton("Logout");
 
 			JLabel lbl=new JLabel("");
 			JLabel timeLabel = new JLabel();
@@ -1095,11 +1170,11 @@ public class SystemFMS{
 			panel1.add(staff);
 			panel1.add(view_2);
 			panel1.add(delete_2);
-			// panel1.add(report);
 			panel1.add(leave);
 			panel1.add(task);
-			// // panel.add(maintain);
-			// panel.add(sendLog);
+			panel1.add(approve);
+			panel1.add(maintain);
+			panel1.add(sendLog);
 			panel1.add(view);
 			
 			Date today = Calendar.getInstance().getTime();
@@ -1107,27 +1182,103 @@ public class SystemFMS{
 			String date1 = formatter.format(today);
 			timeLabel.setText(date1);
 			panel1.add(timeLabel);
-			panel1.add(exit);
+			panel1.add(logout);
 			panel.add(panel1);
 			frame.getContentPane().add(panel,BorderLayout.CENTER);
 			Scanner scan=new Scanner(System.in);
 			read_supervisor(s);
-			exit.addActionListener(new ActionListener(){
+			logout.addActionListener(new ActionListener(){
          		public void actionPerformed(ActionEvent e) { 
-         			System.exit(0);
+         			new SystemFMS();
          		}});
+			maintain.addActionListener(new ActionListener(){
+         		public void actionPerformed(ActionEvent e) {  
+         		sp.maintainLog();
+         		JPanel panel6=new JPanel();
+         		panel6.setBackground(new Color(255,255,244));
+         		panel6.add(new JLabel("Logistics view on console"));
+         		panel.add(panel6);
+         		panel.updateUI();
+         		}
+         	});
+         	sendLog.addActionListener(new ActionListener(){
+         		public void actionPerformed(ActionEvent e) {  
+         		JLabel l=new JLabel("Enter Taskid");
+         		JTextField intruct=new JTextField();
+         		intruct.setPreferredSize(new Dimension(100, 40));
+         		JButton submit =new JButton("Submit");
+         		JPanel panel5=new JPanel(new FlowLayout());
+         		panel5.setBackground(new Color(255,255,244));
+         		panel5.add(l);
+         		panel5.add(intruct);
+         		panel5.add(submit);
+         		panel.add(panel5);
+         		panel.updateUI();
+
+         	
+         	submit.addActionListener(new ActionListener(){
+         		public void actionPerformed(ActionEvent e) { 
+         		String id=intruct.getText();
+         		int check=sp.sendLogisticApproval(sp,id);
+         		JPanel panel6=new JPanel();
+         		panel6.setBackground(new Color(255,255,244));
+         		if(check==1)
+         			panel6.add(new JLabel("Logistics send to admin"));
+         		else
+         			panel6.add(new JLabel("log not send"));
+         		panel.add(panel6);
+         		panel.updateUI();
+         }
+     });
+         		}
+         	});
+         	approve.addActionListener(new ActionListener(){
+         		public void actionPerformed(ActionEvent e) {  
+         		JLabel l1=new JLabel("Enter instruction");
+         		JTextField intruct1=new JTextField();
+         		intruct1.setPreferredSize(new Dimension(100, 40));
+         		JLabel l=new JLabel("Enter Taskid");
+         		JTextField intruct=new JTextField();
+         		intruct.setPreferredSize(new Dimension(100, 40));
+         		JButton submit =new JButton("Submit");
+         		JPanel panel5=new JPanel(new FlowLayout());
+         		panel5.setBackground(new Color(255,255,244));
+         		panel5.add(l1);
+         		panel5.add(intruct1);
+         		panel5.add(l);
+         		panel5.add(intruct);
+         		panel5.add(submit);
+         		panel.add(panel5);
+         		panel.updateUI();
+
+         	
+         	submit.addActionListener(new ActionListener(){
+         		public void actionPerformed(ActionEvent e) { 
+         		String id=intruct.getText();
+         		String ints=intruct1.getText();
+         		int check=sp.approvelogisticApproval(ints,sp,id);
+         		JPanel panel6=new JPanel();
+         		panel6.setBackground(new Color(255,255,244));
+         		if(check==1)
+         			panel6.add(new JLabel("Approve instructed"));
+         		else
+         			panel6.add(new JLabel("not instructed"));
+         		panel.add(panel6);
+         		panel.updateUI();
+         }
+     });
+         		}
+         	});
+
 		staff.addActionListener(new ActionListener(){
          		public void actionPerformed(ActionEvent e) {  
          			panel2=new JPanel(new FlowLayout());
          			System.out.println("Add");
          			sta = new JButton("Staff");
-         			
+         			panel2.setBackground(new Color(255,255,244));
          			panel2.add(sta);
-         			// panel1.add(sta);
-         			// panel1.add(back);
          			panel.add(panel2);
          			panel.updateUI();
-         			// frame.getContentPane().add(panel,BorderLayout.CENTER);
 
          				sta.addActionListener(new ActionListener(){
          			public void actionPerformed(ActionEvent e){
@@ -1141,6 +1292,7 @@ public class SystemFMS{
          				user.setPreferredSize(new Dimension(100, 40));
          				JButton submit= new JButton("Submit");
          				JPanel panel5=new JPanel(new FlowLayout());
+         				panel5.setBackground(new Color(255,255,244));
          				panel5.add(l);
          				panel5.add(intruct);
          				panel5.add(l1);
@@ -1148,7 +1300,6 @@ public class SystemFMS{
          				panel5.add(submit);
          				panel.add(panel5);
          				panel.updateUI();
-         				// frame.getContentPane().add(panel,BorderLayout.CENTER);
          				submit.addActionListener(new ActionListener()
          				{
          					public void actionPerformed(ActionEvent e){
@@ -1158,13 +1309,13 @@ public class SystemFMS{
          						System.out.println(line);
 								int check=sp.approveStaffMember(line,sp,name);
 								JPanel panel6=new JPanel();
+								panel6.setBackground(new Color(255,255,244));
 								if(check==1)
 									panel6.add(new JLabel("staff intstructed"));
 								else 
 									panel6.add(new JLabel("staff not instructed"));
 								panel.add(panel6);
 								panel.updateUI();
-								// frame.getContentPane().add(panel,BorderLayout.CENTER);
          					}
          				});
          			}
@@ -1177,17 +1328,11 @@ public class SystemFMS{
          		public void actionPerformed(ActionEvent e) {  
          			System.out.println("Add");
          			 panel3=new JPanel(new FlowLayout());
-         			 // supview = new JButton("Supervisor");
+         			 panel3.setBackground(new Color(255,255,244));
          			staview = new JButton("Staff");
-         			 // back = new JButton("back");
-         			// panel1.removeAll();
-					// panel.remove(panel2);
-         			// panel3.add(supdel);
          			panel3.add(staview);
-         			// panel1.add(back);
          			panel.add(panel3);
          			panel.updateUI();
-         			// frame.getContentPane().add(panel,BorderLayout.CENTER);  
          		
          			staview.addActionListener(new ActionListener()
          				{
@@ -1195,6 +1340,7 @@ public class SystemFMS{
          						
          						sp.viewStaff(sp);
          						JPanel panel6=new JPanel();
+         						panel6.setBackground(new Color(255,255,244));
          						panel6.add(new JLabel("Viewed on console"));
          						panel.add(panel6);
 								panel.updateUI();
@@ -1209,13 +1355,9 @@ public class SystemFMS{
          		public void actionPerformed(ActionEvent e) {  
          			panel2=new JPanel(new FlowLayout());
          			System.out.println("Add");
-         			 // supview = new JButton("Supervisor");
          			 stadel = new JButton("Staff");
-         			 // back = new JButton("back");
-         			// panel.remove(panel1);
-         			// panel2.add(supview);
          			panel2.add(stadel);
-         			// panel1.add(back);
+         			panel2.setBackground(new Color(255,255,244));
          			panel.add(panel2);
          			panel.updateUI();
          			frame.getContentPane().add(panel,BorderLayout.CENTER);  
@@ -1227,29 +1369,24 @@ public class SystemFMS{
          				user.setPreferredSize(new Dimension(100, 40));
          				JButton submit= new JButton("Submit");
          				JPanel panel5=new JPanel(new FlowLayout());
-         				// panel5.add(l);
-         				// panel5.add(intruct);
+         				panel5.setBackground(new Color(255,255,244));
          				panel5.add(l1);
          				panel5.add(user);
          				panel5.add(submit);
          				panel.add(panel5);
          				panel.updateUI();
-         				// frame.getContentPane().add(panel,BorderLayout.CENTER);
-         				submit.addActionListener(new ActionListener()
-         				{
+         				submit.addActionListener(new ActionListener(){
          					public void actionPerformed(ActionEvent e){
          						System.out.println("in action");
-         						// String line=intruct.getText();
          						String name=user.getText();
-         						// System.out.println(line);
 								int check=sp.deleteStaff(name,sp);
 								JPanel panel6=new JPanel();
+								panel6.setBackground(new Color(255,255,244));
 								if(check==1)
 									panel6.add(new JLabel("staff deleted"));
 								else
 									panel6.add(new JLabel("staff not deleted"));
-								// else 
-									// panel6.add(new JLabel("staff not deleted"));
+
 								panel.add(panel6);
 								panel.updateUI();
 								frame.getContentPane().add(panel,BorderLayout.CENTER);
@@ -1260,28 +1397,47 @@ public class SystemFMS{
             	}
          	});
 
-		leave.addActionListener(new ActionListener()
-         {
+		leave.addActionListener(new ActionListener(){
          	public void actionPerformed(ActionEvent e){
+         		JLabel l=new JLabel("Enter end Date");
+         			JTextField intruct=new JTextField();
+         			intruct.setPreferredSize(new Dimension(100, 40));
+         			JLabel l1=new JLabel("Reason");
+         			JTextField reason=new JTextField();
+         			reason.setPreferredSize(new Dimension(100, 40));
+         			JButton submit =new JButton("Submit");
+         			panel2=new JPanel(new FlowLayout(FlowLayout.LEADING, 5, 60));
+         			panel2.setBackground(new Color(255,255,244));
+         			panel2.add(l);
+         			panel2.add(intruct);
+         			panel2.add(l1);
+         			panel2.add(reason);
+         			panel2.add(submit);
+         			panel.add(panel2);
+         			panel.updateUI();
+         			submit.addActionListener(new ActionListener(){
+         		public void actionPerformed(ActionEvent e) { 
          		JPanel panel6=new JPanel();
+         		panel6.setBackground(new Color(255,255,244));
 				panel6.add(new JLabel("staff on leave"));
 				panel.add(panel6);
 				panel.updateUI();
-				// frame.getContentPane().add(panel,BorderLayout.CENTER);
          		sp.sendLeave();
          		}
          	});
-		task.addActionListener(new ActionListener()
-         {
+         		}
+         	});
+		task.addActionListener(new ActionListener(){
          	public void actionPerformed(ActionEvent e){
          		JLabel l1=new JLabel("Enter taskname");
          		JTextField user=new JTextField();
          		user.setPreferredSize(new Dimension(100, 40));
          		JLabel l2=new JLabel("Enter number of staff");
-         		final JTextField user1=new JTextField();
+         		JTextField user1=new JTextField();
          		JButton submit= new JButton("Submit");
          		user1.setPreferredSize(new Dimension(100, 40));
          		JPanel panel5=new JPanel(new FlowLayout());
+         		panel5.setBackground(new Color(255,255,244));
          		panel5.add(l1);
          		panel5.add(user);
          		panel5.add(l2);
@@ -1289,15 +1445,14 @@ public class SystemFMS{
          		panel5.add(submit);
          		panel.add(panel5);
 				panel.updateUI();
-				// frame.getContentPane().add(panel,BorderLayout.CENTER);
 				
-				// int n=in.nextInt();
-		submit.addActionListener(new ActionListener()
-         {public void actionPerformed(ActionEvent e){
+		submit.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
          	String taskname=user.getText();
          	String n=user1.getText();
 				int check=sp.assignTasktoStaff(taskname,Integer.parseInt(n),sp);
          		JPanel panel6=new JPanel();
+         		panel6.setBackground(new Color(255,255,244));
          		System.out.println(check);
 				if(check==1)
 					panel6.add(new JLabel("Task assigned"));
@@ -1311,11 +1466,11 @@ public class SystemFMS{
          	});
 	}
 });
-	view.addActionListener(new ActionListener()
-         {
+	view.addActionListener(new ActionListener(){
          	public void actionPerformed(ActionEvent e){
          		sp.viewTask(sp);
          		JPanel panel6=new JPanel();
+         		panel6.setBackground(new Color(255,255,244));
 				panel6.add(new JLabel("View on console"));
 				panel.add(panel6);
 				panel.updateUI();
@@ -1323,66 +1478,23 @@ public class SystemFMS{
 			}
 		});
 
-
-			// System.out.println("4.Add Staff");
-			// System.out.println("5.View Staff");
-			// System.out.println("6.Delete Staff");
-			// System.out.println("7.AssignTask");
-			// System.out.println("8.Send leave");
-			// System.out.println("9.Reject log");
-			// int x=scan.nextInt();
-			// Scanner in=new Scanner(System.in);
-			// while(x!=9){
-			// if(x==4)
-			// {
-			// 	String line=in.nextLine();
-			// 	sp.approveStaffMember(line,sp);
-			// }
-			// else if(x==5)
-			// {
-			// 	sp.viewStaff(sp);
-			// }
-			// else if(x==6)
-			// {
-			// 	String name=in.nextLine();
-			// 	sp.deleteStaff(name,sp);
-			// }
-			// else if(x==7)
-			// {
-			// 	String taskname=in.nextLine();
-			// 	int n=in.nextInt();
-
-			// 	sp.assignTasktoStaff(taskname,n,sp);
-			// }
-			// else if(x==8)
-			// {
-			// 	sp.sendLeave();
-			// }
-
-			// x=scan.nextInt();
-	home.addActionListener(new ActionListener()
-         				{
+	home.addActionListener(new ActionListener(){
          					public void actionPerformed(ActionEvent e){
          						new View_Supervisor(s);
          					}
          				});
-		
-	}
+		}
 }
-	public void read_admin()
-	{
+	public void read_admin(){
 		BufferedReader br_1 = null;
 			try{
 			br_1 = new BufferedReader(new FileReader("admin.csv"));
-			// String line_1=br_1.readLine();
 			String line_2=br_1.readLine();
 			String[] details=line_2.split(",");
 			ad=new Admin(details[1],details[0],details[2],details[5],details[6],details[4],details[5],details[7]);
-			
 		}
 		
-		catch(Exception e)
-		{
+		catch(Exception e){
 			e.printStackTrace();
 		}
 		finally {
@@ -1392,29 +1504,23 @@ public class SystemFMS{
                 System.out.println("Error while flushing/closing fileWriter !!!");
                 ed.printStackTrace();
             }
-
-        	}	
+		}	
 	}
-	public void read_staff(String s)
-	 {
+	public void read_staff(String s){
 		BufferedReader br_1 = null;
 			try{
 			br_1 = new BufferedReader(new FileReader("staff.csv"));
 			String line_2;
 			while((line_2=br_1.readLine())!=null){
 			String[] details=line_2.split(",");
-				if(details[2].equals(s))
-					{
+				if(details[2].equals(s)){
 						st=new Staff(details[1],details[0],details[2],details[5],details[6],details[4],details[5],details[7]);
 						break;
 					}	
 			}
-			
-			
 		}
 		
-		catch(Exception e)
-		{
+		catch(Exception e){
 			e.printStackTrace();
 		}
 		finally {
@@ -1427,26 +1533,21 @@ public class SystemFMS{
 
         	}	
 	}
-	public void read_supervisor(String s)
-	{
+	public void read_supervisor(String s){
 		BufferedReader br_1 = null;
 			try{
 			br_1 = new BufferedReader(new FileReader("supervisor.csv"));
 			String line_2;
 			while((line_2=br_1.readLine())!=null){
 			String[] details=line_2.split(",");
-				if(details[2].equals(s))
-					{
-						sp=new Supervisor(details[1],details[0],details[2],details[5],details[6],details[4],details[5],details[7]);
-						break;
-					}	
+				if(details[2].equals(s)){
+					sp=new Supervisor(details[1],details[0],details[2],details[5],details[6],details[4],details[5],details[7]);
+					break;
+				}	
 			}
-			
-			
 		}
 		
-		catch(Exception e)
-		{
+		catch(Exception e){
 			e.printStackTrace();
 		}
 		finally {
@@ -1456,14 +1557,11 @@ public class SystemFMS{
                 System.out.println("Error while flushing/closing fileWriter !!!");
                 ed.printStackTrace();
             }
-
-        	}	
+		}	
 	}
 
 	public static void main(String[] args){
-		// System.out.printf("gfhefhbhf");
 		new SystemFMS();
 	}
-
 }
 

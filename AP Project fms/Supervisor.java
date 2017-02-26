@@ -9,25 +9,13 @@ public class Supervisor extends User{
 	ArrayList<Staff> staffPendingList2=new ArrayList<Staff>();
 	ArrayList<Logistics> logisticsList = new ArrayList<Logistics>();
 	ArrayList<Logistics> logisticsPendingList = new ArrayList<Logistics>();
+	ArrayList<Logistics> logisticsList_sent = new ArrayList<Logistics>();
 	static ArrayList<Supervisor> leaveAppListSup = new ArrayList<Supervisor>();
 	ArrayList<Task> taskList=new ArrayList<Task>();
 	Supervisor(String n,String i, String u, String d, String a, String de, String t,String p)
 	{
 		super(n,i,u,d,a,de,t,p);
 	}
-	// public void addStaff(Staff s,String name, int id, String username, String dob, String address, String dept, String type, String pass)
-	// {
-	// 	staffList2 = getDeptStaffDatabase();
-	// 	s.setName(name);
-	// 	s.setId(id);
-	// 	s.setUsername(username);
-	// 	s.setDob(dob);
-	// 	s.setAddress(address);
-	// 	s.setDept(dept);
-	// 	s.setType(type);
-	// 	s.setPassword(pass);
-	// 	staffList2.add(s);
-	// }
 	public String getStatusSupervisor()
 	{
 			return status;
@@ -43,10 +31,6 @@ public class Supervisor extends User{
 	staffList2.clear();
 	staffPendingList2 = getDeptPendingStaffDatabase(sp);
 	staffList2 = getDeptStaffDatabase(sp);
-	// System.out.println(staffList2);
-	// System.out.println(staffPendingList2);
-	// Scanner in=new Scanner(System.in);
-	// String name=in.nextLine();
 	int count;
 	if(instruction.equals("Accept")){
 		count=0;
@@ -133,10 +117,6 @@ public class Supervisor extends User{
 			}
 				else
 					System.out.println("Different dep");
-			
-			
-
-
 			}
 
 		}
@@ -193,55 +173,101 @@ public class Supervisor extends User{
 				return 0;	
 	}
 	
-	// public void maintainLog()
-	// {
-	// 	logisticsList = getLogisticsDatabase();
-	// 	for(Logistics tl=0;tl<logisticsList.size();tl++){
-	// 		System.out.println(tl);
-	// 	}
-	// }
-// 	public void sendLogisticApproval(String instruction, Supervisor sp)
-// 	{
-// 	logisticsPendingList.clear();
-// 	logisticsList.clear();
-// 	logisticsPendingList = getPendingLogisticsDatabase(sp);
-// 	logisticsList = getLogisticsDatabase(sp);
-// 	Scanner in=new Scanner(System.in);
-// 	String name=in.nextLine();
+	public void maintainLog()
+	{
+		logisticsList = getLogisticsDatabase_sup();
+		for(int tl=0;tl<logisticsList.size();tl++){
+			System.out.println(logisticsList.get(tl));
+		}
+	}
+	public int sendLogisticApproval( Supervisor sp,String name)
+	{
+	logisticsPendingList.clear();
+	logisticsList.clear();
+	logisticsList_sent = getLogisticsDatabase_sentrequest();
+	logisticsList = getLogisticsDatabase_sup();
+	// Scanner in=new Scanner(System.in);
+	// String name=in.nextLine();
+	int count=0;
 	
-// 	if(instruction.equals("Accept")){
-// 	for(int i=0;i<logisticsPendingList.size();i++){
-// 		Logistics st=logisticsPendingList.get(i);
-// 		if(st.getTaskId().equals(name)){
+	for(int i=0;i<logisticsList.size();i++){
+		Logistics st=logisticsList.get(i);
+		if(st.getTaskId().equals(name)){
 			
-// 		logisticsList.add(st);
-// 		logisticsPendingList.remove(st);
-// 		setDeptStaffDatabase(logisticsList);
-// 		setLogisticsPendingDatabase(logisticsPendingList);
-// 		//send to admin
-// 		break;
-// 		}
-// 	}
+		logisticsList_sent.add(st);
+		logisticsList.remove(st);
+		setLogisticsDatabase_sup(logisticsList);
+		setLogisticsDatabase(logisticsList_sent);
+		//send to admin
+		count++;
+		break;
+		
+	}
 
-// }
-// 		else if(instruction.equals("Reject")){
-// 		for(int i=0;i<logisticsPendingList.size();i++){
-// 		Staff st=logisticsPendingList.get(i);
-// 		if(st.getTaskId().equals(name)){
+}
+if(count==1)
+	return 1;
+else return 0;
+}
+public int approvelogisticApproval(String instruction,Supervisor sp,String id)
+{
+		logisticsList.clear();
+		logisticsPendingList.clear();
+		logisticsList = getLogisticsDatabase_sup();
+		System.out.println(logisticsList);
+		logisticsPendingList = getPendingLogisticsDatabase_Staff();
+		System.out.println(logisticsPendingList);
+		int count;
+		if(instruction.equalsIgnoreCase("Accept")){
+			count=0;
+		for(int i=0;i<logisticsPendingList.size();i++){
+				if(logisticsPendingList.get(i).getTaskId().equals(id))
+				{	
+						logisticsList.add(logisticsPendingList.get(i));
+						logisticsPendingList.remove(logisticsPendingList.get(i));
+						System.out.println(logisticsList);
+						setLogisticsDatabase_sup(logisticsList);
+						setLogisticsDatabase_staff(logisticsPendingList);
+						// return 1;
+						count++;
+						// break;
+					}		
+			}
+			if(count==1)
+				return 1;
+			else 
+				return 0;
 			
-// 		logisticsPendingList.remove(st);
-// 		setLogisticsPendingDatabase(logisticsPendingList);
-// 		System.out.println(logisticsList);
-// 		System.out.println(logisticsPendingList);
-// 		break;
-// 		}
-// 		}
-// 	}	
+		}
 	
-// 		else if(instruction.equals("Hold")){
-// 			System.out.println("On hold");
-// 		}
-// 	}
+			else if(instruction.equalsIgnoreCase("Reject")){
+
+				count=0;
+				for(int i=0;i<logisticsPendingList.size();i++){
+				if(logisticsPendingList.get(i).getTaskId().equals(id))
+				{
+				logisticsPendingList.remove(logisticsPendingList.get(i));
+				// setLogisticsDatabase_sup(logisticsPendingList);
+				setLogisticsDatabase_staff(logisticsPendingList);
+				count++;
+			
+				}
+				
+			}
+			if(count==1)
+				return 1;
+			else 
+				return 0;
+		}
+			else if(instruction.equalsIgnoreCase("Hold")){
+				System.out.println("request on hold");
+				return 1;
+			}
+			return 1;
+		
+	}
+
+
 	public void sendLeave()
 	{
 		leaveAppListSup.add(this);
@@ -249,15 +275,12 @@ public class Supervisor extends User{
 	}
 	public void viewTask(Supervisor sp)
 	{	BufferedReader br_1 = null;
-		// int count=0;
 			try{
 			br_1 = new BufferedReader(new FileReader("task_admin.csv"));
 			String line_1;
 			while((line_1=br_1.readLine())!=null)
 			{	
 			String[] details=line_1.split(",");
-			// System.out.println(details[4]);
-			// System.out.println(details[4].equalsIgnoreCase(sp.getDept()));
 			Task s=new Task(details[0],details[1],details[2],details[3],details[4],details[5],details[6]);
 			System.out.println(s);
 		}}
@@ -274,7 +297,6 @@ public class Supervisor extends User{
             }
 
         	}	
-			// return staffList2;
 		
 	}
 	public ArrayList<Task> getTasks()
@@ -300,7 +322,6 @@ public class Supervisor extends User{
 	
 	public ArrayList<Staff> getDeptStaffDatabase(Supervisor sp){
 		BufferedReader br_1 = null;
-		// int count=0;
 			try{
 			br_1 = new BufferedReader(new FileReader("staff.csv"));
 			String line_1;
@@ -330,7 +351,6 @@ public class Supervisor extends User{
 
         	}	
 			return staffList2;
-		//make arrayList of only those staffers belonging to this supervisor's department
 	}
 public ArrayList<Staff> getDeptPendingStaffDatabase(Supervisor sp){
 		BufferedReader br_1 = null;
@@ -363,7 +383,6 @@ public ArrayList<Staff> getDeptPendingStaffDatabase(Supervisor sp){
 		
 				return staffPendingList2;
 		
-		//make arrayList of only those pending staffers belonging to this supervisor's department
 	}
 
 	public void setDeptStaffDatabase(ArrayList<Staff> staffList2){
@@ -391,7 +410,6 @@ public ArrayList<Staff> getDeptPendingStaffDatabase(Supervisor sp){
 
         	}	
 		
-		//update only entries of this department in the staff database
 	}
 	public void setDeptPendingStaffDatabase(ArrayList<Staff> staffPendingList2){
 		BufferedWriter br_1 = null;
@@ -416,7 +434,6 @@ public ArrayList<Staff> getDeptPendingStaffDatabase(Supervisor sp){
             }
 
         	}	
-		//update only entries of this department in the pending staff database
 	}
 	public void settaskDatabase_supervisor(Task t){
 		BufferedWriter br_1 = null;
@@ -442,11 +459,9 @@ public ArrayList<Staff> getDeptPendingStaffDatabase(Supervisor sp){
         	}	
 
 		
-		//update only entries of this department in the staff database
 	}
 	public ArrayList<Task> gettaskdatabase(){
 		BufferedReader br_1 = null;
-		// int count=0;
 			try{
 			br_1 = new BufferedReader(new FileReader("task_admin.csv"));
 			String line_1;
@@ -475,126 +490,169 @@ public ArrayList<Staff> getDeptPendingStaffDatabase(Supervisor sp){
 
         	}	
 			return taskList;
-		//make arrayList of only those staffers belonging to this supervisor's department
 	}
 
-// 	public ArrayList<Logistics> getPendingLogisticsDatabase(){
-// 		BufferedReader br_1 = null;
-// 			try{
-// 			br_1 = new BufferedReader(new FileReader("logisting_pending.csv"));
-// 			String line_1;
-// 			while((line_1=br_1.readLine())!=null)
-// 			{	
-// 			String[] details=line_1.split(",");
-// 			Logistics s=new logisticList2(details[1],details[0],details[2],details[5],details[6],details[4],details[5],details[7]);
-// 			logisticsPendingList.add(s);
-// 		}
-// 		}
-// 		catch(Exception e)
-// 		{
-// 			e.printStackTrace();
-// 		}
-// 		finally {
-//                 try {
-//                 br_1.close();
-//             } catch (IOException ed) {
-//                 System.out.println("Error while flushing/closing fileWriter !!!");
-//                 ed.printStackTrace();
-//             }
+	public ArrayList<Logistics> getPendingLogisticsDatabase_Staff(){
+		BufferedReader br_1 = null;
+			try{
+			br_1 = new BufferedReader(new FileReader("logistic_staff.csv"));
+			String line_1;
+			while((line_1=br_1.readLine())!=null)
+			{	
+			String[] details=line_1.split(",");
+			System.out.print(details[1]);
+			Logistics s=new Logistics(details[2],details[0],details[1]);
+			System.out.println(s);
+			logisticsPendingList.add(s);
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally {
+                try {
+                br_1.close();
+            } catch (IOException ed) {
+                System.out.println("Error while flushing/closing fileWriter !!!");
+                ed.printStackTrace();
+            }
 
-//         	}	
+        	}	
 
-// 		return logisticsPendingList;
-// 	}
+		return logisticsPendingList;
+	}
 	
-// 	public ArrayList<Logistics> getLogisticsDatabase(){
+	public ArrayList<Logistics> getLogisticsDatabase_sup(){
 
-// 		BufferedReader br_1 = null;
-// 			try{
-// 			br_1 = new BufferedReader(new FileReader("logisting.csv"));
-// 			String line_1;
-// 			while((line_1=br_1.readLine())!=null)
-// 			{	
-// 			String[] details=line_1.split(",");
-// 			Logistics s=new logisticList2(details[1],details[0],details[2],details[5],details[6],details[4],details[5],details[7]);
-// 			logisticsList.add(s);
-// 		}
-// 		}
-// 		catch(Exception e)
-// 		{
-// 			e.printStackTrace();
-// 		}
-// 		finally {
-//                 try {
-//                 br_1.close();
-//             } catch (IOException ed) {
-//                 System.out.println("Error while flushing/closing fileWriter !!!");
-//                 ed.printStackTrace();
-//             }
+		BufferedReader br_1 = null;
+			try{
+			br_1 = new BufferedReader(new FileReader("logistic_supervisor.csv"));
+			String line_1;
+			while((line_1=br_1.readLine())!=null)
+			{	
+			String[] details=line_1.split(",");
+			Logistics s=new Logistics(details[2],details[0],details[1]);
+			logisticsList.add(s);
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally {
+                try {
+                br_1.close();
+            } catch (IOException ed) {
+                System.out.println("Error while flushing/closing fileWriter !!!");
+                ed.printStackTrace();
+            }
 
-//         	}	
+        	}	
 
-// 		return logisticsList;
-// 	}
-// 	public void setPendingLogisticsDatabase(ArrayList<Logistics> logisticsPendingList){
-// 			BufferedWriter br_1=null;
-// 		try{
-// 			br_1=new BufferedWriter(new FileWriter("logisting_pending.csv"));
-// 			// br_1.write("id,Name,UserName,Type,Department,DOB,Address,password\n");
-// 			for(int i=0;i<logisticPendingList.size();i++)
-// 				{	Logistics s=logisticPendingList.get(i);
-// 				br_1.write(s.getId()+","+s.getName()+","+s.getUsername()+","+s.getType()+","+s.getDept()+","+s.getDob()+","+s.getAddress()+","+s.getPassword()+"\n");
-// 			}
-// 		}
-// 			catch(Exception e)
-// 				{e.printStackTrace();
-// 				}
-// 				finally {
-//                 try {
-//                 br_1.close();
-//             } catch (IOException ed) {
-//                 System.out.println("Error while flushing/closing fileWriter !!!");
-//                 ed.printStackTrace();
-//             }
+		return logisticsList;
+	}
+	public void setLogisticsDatabase_sup(ArrayList<Logistics> logisticsList){
+			BufferedWriter br_1=null;
+		try{
+			br_1=new BufferedWriter(new FileWriter("logistic_supervisor.csv"));
+			for(int i=0;i<logisticsList.size();i++)
+				{	Logistics s=logisticsList.get(i);
+				br_1.write(s.getLogId()+","+s.getItem_quan()+","+s.getTaskId()+"\n");
+			}
+		}
+			catch(Exception e)
+				{e.printStackTrace();
+				}
+				finally {
+                try {
+                br_1.close();
+            } catch (IOException ed) {
+                System.out.println("Error while flushing/closing fileWriter !!!");
+                ed.printStackTrace();
+            }
 
-//         	}	
+        	}	
 		
-
-// 	}
-// 	}
-// 	public void setLogisticsDatabase(ArrayList<Logistics> logisticList){
-// 		BufferedWriter br_1=null;
-// 		try{
-// 			br_1=new BufferedWriter(new FileWriter("logisting.csv"));
-// 			// br_1.write("id,Name,UserName,Type,Department,DOB,Address,password\n");
-// 			for(int i=0;i<logisticList.size();i++)
-// 				{	Logistics s=logisticList.get(i);
-// 				br_1.write(s.getId()+","+s.getName()+","+s.getUsername()+","+s.getType()+","+s.getDept()+","+s.getDob()+","+s.getAddress()+","+s.getPassword()+"\n");
-// 			}
-// 		}
-// 			catch(Exception e)
-// 				{e.printStackTrace();
-// 				}
-// 				finally {
-//                 try {
-//                 br_1.close();
-//             } catch (IOException ed) {
-//                 System.out.println("Error while flushing/closing fileWriter !!!");
-//                 ed.printStackTrace();
-//             }
-
-//         	}	
-		
-
-// 	}
-// }
-
-	// }/
-	public void setTaskDatabase(){
 
 	}
 	
-	
-	
+	public void setLogisticsDatabase_staff(ArrayList<Logistics> logisticsPendingList){
+			BufferedWriter br_1=null;
+		try{
+			br_1=new BufferedWriter(new FileWriter("logistic_staff.csv"));
+			for(int i=0;i<logisticsPendingList.size();i++)
+				{	Logistics s=logisticsPendingList.get(i);
+				br_1.write(s.getLogId()+","+s.getItem_quan()+","+s.getTaskId()+"\n");
+			}
+		}
+			catch(Exception e)
+				{e.printStackTrace();
+				}
+				finally {
+                try {
+                br_1.close();
+            } catch (IOException ed) {
+                System.out.println("Error while flushing/closing fileWriter !!!");
+                ed.printStackTrace();
+            }
+
+        	}	
+		
+
+	}
+	public ArrayList<Logistics> getLogisticsDatabase_sentrequest(){
+
+		BufferedReader br_1 = null;
+			try{
+			br_1 = new BufferedReader(new FileReader("logistic_pending.csv"));
+			String line_1;
+			while((line_1=br_1.readLine())!=null)
+			{	
+			String[] details=line_1.split(",");
+			Logistics s=new Logistics(details[2],details[0],details[1]);
+			logisticsList_sent.add(s);
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally {
+                try {
+                br_1.close();
+            } catch (IOException ed) {
+                System.out.println("Error while flushing/closing fileWriter !!!");
+                ed.printStackTrace();
+            }
+
+        	}	
+
+		return logisticsList_sent;
+	}
+	public void setLogisticsDatabase(ArrayList<Logistics> logisticsList_sent){
+		BufferedWriter br_1=null;
+		try{
+			br_1=new BufferedWriter(new FileWriter("logistic_pending.csv"));
+			for(int i=0;i<logisticsList_sent.size();i++)
+				{	Logistics s=logisticsList_sent.get(i);
+				br_1.write(s.getLogId()+","+s.getItem_quan()+","+s.getTaskId()+"\n");
+			}
+		}
+			catch(Exception e)
+				{e.printStackTrace();
+				}
+				finally {
+                try {
+                br_1.close();
+            } catch (IOException ed) {
+                System.out.println("Error while flushing/closing fileWriter !!!");
+                ed.printStackTrace();
+            }
+
+        	}	
+		
+
+	}
 
 }

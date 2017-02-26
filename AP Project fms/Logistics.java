@@ -3,9 +3,11 @@ import java.util.*;
 public class Logistics{
 	private String logId;
 	private String taskId;
-	static ArrayList<String> item_quan;
-	public Logistics(String tid){
+	private String item_quan;
+	public Logistics(String tid,String logid,String item_quans){
 		taskId = tid;
+		logId=logid;
+		item_quan=item_quans;
 	}
 	public void setLogId(String id){
 		logId = id;
@@ -20,12 +22,12 @@ public class Logistics{
 		return taskId;
 	}
 	public void addItem_quan(String i){
-		item_quan.add(i);
+		item_quan=i;
 	}
-	public static ArrayList<String> getItem_quan(){
+	public  String getItem_quan(){
 		return item_quan;
 	}
 	public String toString(){
-		return "Task ID : " + getTaskId() + "\n" + "Logistics ID : " + getLogId() + "\n" + "Items-Quantities" + getItem_quan() + "\n";
+		return "Task ID : " + getTaskId() + "\n" + "Logistics ID : " + getLogId() + "\n" + "Items-Quantities:" + getItem_quan() + "\n";
 	}
 }
